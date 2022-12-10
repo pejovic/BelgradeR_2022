@@ -362,32 +362,27 @@ knitr::include_graphics('figures/Point_Attribute_Table.png')
 ---
 # Koordinate i Koordinatni Referenti Sistem (CRS)
 
-</br>
-</br>
 
 .center[
 ***<font color='red'>"Data are not just numbers, they are numbers with a context; “In data analysis, context provides meaning”</font>*** ([Cobb and Moore, 1997](http://www.jstor.org/stable/2975286))
 ]
 
-</br>
-
 .center[
 ***<font color='red'>"Coordinates are not just numbers, they are numbers with a spatial context”</font>***
 ]
 
----
-# Koordinatni referenti sistem - terminologija
+----
 
+**Koordinatni referentni sistem predstavlja set informacija kojim se opisuje geografski prostoru u matematičkom smislu (u odnosu na Zemlju):**
 
-- **Koordinatni sistem (coordinate system) je set matematickih pravila koja definišu kako se koordinate dodeljuju tački**
+**On uključuje:**
 
-- **Datum (datum) je set parametara koji definiše položaj koordinatnog početka, razmeru i orijentaciju koordinatnog sistema**
+- set matematičkih pravila kojim se definiše kako se koordinate dodeljuju tačkama u prostoru
+- set parametara koji definišu poziciju početka koordiatnog sistema, razmera i orijentacija koordinatnog sistema (datum)
 
-- **Geodetski datum opisuje odnos koordinatnog sistema u odnosu na Zemlju**
+----
 
-- **Koordinatni Referentni Sistem (Coordinate Reference System) je koordinatni sistem ciji je položaj odreden datumom u odnosu na referentni objekat. U slucaju planete zemlje (WGS84) parametri geodetskog datuma se koriste.**
-
-- **Možemo razlikovati Geografske koordinatne sisteme, Koordinatni sistemi u projekciji i Lokalne koordinatne sisteme.**
+**Možemo razlikovati dve glavne grupe koordinatnih referentih sistema: <font color='red'>Geografski koordinatni sistemi</font> i <font color='red'>Koordinatni sistemi u projekciji</font>**
 
 
 
@@ -457,10 +452,47 @@ ggplot(srbija_gk) + geom_sf() + coord_sf(datum = st_crs(GK)) + theme_bw()
 ]
 
 ---
+# Opis koordinatnog sistema
+
+
+.pull-left[
+**Dva prustupa su najzastupljenija:**
+
+- CRS codes, e.g., EPSG:4326
+- `WKT2`
+
+**Do sada najzastupljeniji, ali u svom zalasku:**
+
+- `proj4string` - `r st_crs(4326)$proj4string`
+
+----
+
+*Više informacija:*
+
+.tiny[
+- https://proj.org/usage/projections.html
+- https://spatialreference.org/ref/epsg/
+- https://www.youtube.com/watch?v=Va0STgco7-4 
+- https://www.gaia-gis.it/fossil/libspatialite/wiki?name=PROJ.6
+
+]
+
+]
+
+.pull-right[
+.tiny[
+```{r, purl=FALSE,echo=FALSE}
+st_crs(4326)
+```
+]
+]
+
+
+---
 # Šta obuhvata analiza geo-prostornih podataka?
 
 1. **Učitavanje i ispisivanje prostornih podataka**
-2. **Skladištenje i manipulacija podacima (organizaciju podataka u odgovarajuću formu)**
+2. **Skladištenje i manipulacija podacima (klase i metode)**
 3. **Deskriptivna i ekspanatorna analiza podataka**
 4. **GIS analiza i kartiranje**
 5. **Prostorna statistična analiza (da li neka pojava može biti predstavljena statističkim modelom**
@@ -565,30 +597,6 @@ geometrycollection_sf = st_cast(
 
 
 
-
----
-# Koordinate
-
-```{r, warning=FALSE, purl=FALSE,echo=FALSE}
-library(tmap)
-library(sf)
-polygon_sf$id = as.factor(c(1))
-polygon_sf_af = polygon_sf
-polygon_sf_af$geometry = polygon_sf_af$geometry + c(20, 40)
-polygon_sf_afp = st_cast(polygon_sf_af, "MULTIPOINT")
-tm_shape(polygon_sf_af) +
-  tm_graticules() + 
-  tm_polygons(col = "id", lwd = 7) +
-  tm_shape(polygon_sf_afp) +
-  tm_dots(size = 1) +
-  tm_layout(main.title = "Geographic coordinates", legend.show = FALSE, inner.margins = 0.15) +
-  tm_xlab("Longitude", space = 0.5) + 
-  tm_ylab("Latitude", space = 0.5)
-
-
-
-
-```
 
 
 ---
