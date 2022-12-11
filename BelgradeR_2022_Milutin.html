@@ -314,32 +314,27 @@ class: inverse, center, middle,
 ---
 # Koordinate i Koordinatni Referenti Sistem (CRS)
 
-&lt;/br&gt;
-&lt;/br&gt;
 
 .center[
 ***&lt;font color='red'&gt;"Data are not just numbers, they are numbers with a context; “In data analysis, context provides meaning”&lt;/font&gt;*** ([Cobb and Moore, 1997](http://www.jstor.org/stable/2975286))
 ]
 
-&lt;/br&gt;
-
 .center[
 ***&lt;font color='red'&gt;"Coordinates are not just numbers, they are numbers with a spatial context”&lt;/font&gt;***
 ]
 
----
-# Koordinatni referenti sistem - terminologija
+----
 
+**Koordinatni referentni sistem predstavlja set informacija kojim se opisuje geografski prostoru u matematičkom smislu (u odnosu na Zemlju):**
 
-- **Koordinatni sistem (coordinate system) je set matematickih pravila koja definišu kako se koordinate dodeljuju tački**
+**On uključuje:**
 
-- **Datum (datum) je set parametara koji definiše položaj koordinatnog početka, razmeru i orijentaciju koordinatnog sistema**
+- set matematičkih pravila kojim se definiše kako se koordinate dodeljuju tačkama u prostoru
+- set parametara koji definišu poziciju početka koordiatnog sistema, razmera i orijentacija koordinatnog sistema (datum)
 
-- **Geodetski datum opisuje odnos koordinatnog sistema u odnosu na Zemlju**
+----
 
-- **Koordinatni Referentni Sistem (Coordinate Reference System) je koordinatni sistem ciji je položaj odreden datumom u odnosu na referentni objekat. U slucaju planete zemlje (WGS84) parametri geodetskog datuma se koriste.**
-
-- **Možemo razlikovati Geografske koordinatne sisteme, Koordinatni sistemi u projekciji i Lokalne koordinatne sisteme.**
+**Možemo razlikovati dve glavne grupe koordinatnih referentih sistema: &lt;font color='red'&gt;Geografski koordinatni sistemi&lt;/font&gt; i &lt;font color='red'&gt;Koordinatni sistemi u projekciji&lt;/font&gt;**
 
 
 
@@ -388,10 +383,68 @@ class: inverse, center, middle,
 ]
 
 ---
+# Opis koordinatnog sistema
+
+
+.pull-left[
+**Dva prustupa su najzastupljenija:**
+
+- CRS codes, e.g., EPSG:4326
+- `WKT2`
+
+**Do sada najzastupljeniji, ali u svom zalasku:**
+
+- `proj4string` - +proj=longlat +datum=WGS84 +no_defs
+
+----
+
+*Više informacija:*
+
+.tiny[
+- https://proj.org/usage/projections.html
+- https://spatialreference.org/ref/epsg/
+- https://www.youtube.com/watch?v=Va0STgco7-4 
+- https://www.gaia-gis.it/fossil/libspatialite/wiki?name=PROJ.6
+
+]
+
+]
+
+.pull-right[
+.tiny[
+
+```
+## Coordinate Reference System:
+##   User input: EPSG:4326 
+##   wkt:
+## GEOGCRS["WGS 84",
+##     DATUM["World Geodetic System 1984",
+##         ELLIPSOID["WGS 84",6378137,298.257223563,
+##             LENGTHUNIT["metre",1]]],
+##     PRIMEM["Greenwich",0,
+##         ANGLEUNIT["degree",0.0174532925199433]],
+##     CS[ellipsoidal,2],
+##         AXIS["geodetic latitude (Lat)",north,
+##             ORDER[1],
+##             ANGLEUNIT["degree",0.0174532925199433]],
+##         AXIS["geodetic longitude (Lon)",east,
+##             ORDER[2],
+##             ANGLEUNIT["degree",0.0174532925199433]],
+##     USAGE[
+##         SCOPE["Horizontal component of 3D system."],
+##         AREA["World."],
+##         BBOX[-90,-180,90,180]],
+##     ID["EPSG",4326]]
+```
+]
+]
+
+
+---
 # Šta obuhvata analiza geo-prostornih podataka?
 
 1. **Učitavanje i ispisivanje prostornih podataka**
-2. **Skladištenje i manipulacija podacima (organizaciju podataka u odgovarajuću formu)**
+2. **Skladištenje i manipulacija podacima (klase i metode)**
 3. **Deskriptivna i ekspanatorna analiza podataka**
 4. **GIS analiza i kartiranje**
 5. **Prostorna statistična analiza (da li neka pojava može biti predstavljena statističkim modelom**
@@ -445,11 +498,6 @@ class: inverse, center, middle,
 
 
 
-
----
-# Koordinate
-
-&lt;img src="BelgradeR_2022_Milutin_files/figure-html/unnamed-chunk-22-1.png" style="display: block; margin: auto;" /&gt;
 
 
 ---
