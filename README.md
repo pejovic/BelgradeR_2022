@@ -5,4 +5,4 @@
 **Description:** Repozitorijum sadrzi prezentacije, R skripte i podatke.         
 **Author:** Milutin Pejovic & Petar Bursac 
 
-![Najava](www/Rmeetup_baner 2.png)
+![Najava](www/Rmeetup_baner 2.PNG)
