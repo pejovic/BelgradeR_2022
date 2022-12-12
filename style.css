@@ -12,9 +12,9 @@
 }
 
 .titlestyle1 { 
-  font-family: Lora; 
+  font-family: Tahoma; 
   font-size: 65px;
-font-style: normal;
+font-style: bold;
   color: black;
   font-variant: normal; 
   font-weight: 700; 
@@ -23,9 +23,9 @@ font-style: normal;
 
 
 .titlestyle { 
-  font-family: Lora; 
+  font-family: Tahoma; 
   font-size: 25px;
-  font-style: normal;
+  font-style: bold;
   color: black;
   font-variant: normal; 
   font-weight: 700; 

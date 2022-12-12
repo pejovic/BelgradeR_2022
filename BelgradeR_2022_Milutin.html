@@ -4,7 +4,7 @@
     <title>Analiza geo-prostornih podataka u R-u</title>
     <meta charset="utf-8" />
     <meta name="author" content="Milutin Pejović &amp; Petar Bursać" />
-    <script src="libs/header-attrs/header-attrs.js"></script>
+    <script src="libs/header-attrs-2.11/header-attrs.js"></script>
     <link rel="stylesheet" href="xaringan-themer.css" type="text/css" />
     <link rel="stylesheet" href="style.css" type="text/css" />
   </head>
@@ -14,7 +14,7 @@
 
 class: inverse, left, nonum, clear
 
-background-image: url("figures/ArcGISBook_Header.jpg")
+background-image: url("figures/geo-banner.jpg")
 background-size: cover
 
 .titlestyle1[Analiza geo-prostornih podataka u R-u] 
@@ -26,6 +26,8 @@ background-size: cover
 &lt;br&gt;&lt;br&gt;&lt;br&gt;&lt;br&gt;
 
 .titlestyle[Milutin Pejović &amp; Petar Bursać]
+
+.titlestyle[BelgradeR Meetup]
 
 .titlestyle[2022-12-14, Startit, Beograd]
 
@@ -90,6 +92,12 @@ class: inverse, center, middle,
 - **Geo-prostorni vs. prostorni podaci**
 
 - **Digitalno predstavljaju prirodne i antropogene objekte, prostorne pojave i dogadjaje stavljajući ih u kontekst geografskog prostora**
+
+- **GPS je operativan od 2000 godine.**
+
+- **In 2008, more than 150 Earth observation satellites were in orbit, recording data with both passive and active sensors and acquiring more than 10 terabits of data daily. (Fifty Years of Earth-observation Satellites by A. Tatem, S. Goetz, S. Hay)**
+
+- **Danas je preko 80% digitalnih podataka referisano na geografsku lokaciju (bez reference)**
 ]
 
 ]
@@ -111,13 +119,22 @@ class: inverse, center, middle,
 
 .tiny[
 
-- **Javni podaci državnih službi (prostorni inventari, premer, popis i mape)**
+- Javni podaci državnih službi (prostorni inventari, premer, popis i mape)
+- Podaci permanentnih stanica i senzora (senzori)
+- Podaci daljinske detekcije (GNSS, LiDAR i satelitski snimci)
+- Personalni podaci i podaci sa društvenih mreža
 
-- **Podaci permanentnih stanica i senzora (senzori)**
+- Javno dostupni podaci:
+  - http://freegisdata.rtwilson.com/
+  - https://data.nasa.gov/
+  - https://land.copernicus.eu/
+  - https://maps.elie.ucl.ac.be/CCI/viewer/
+  - https://www.ecad    .eu//dailydata/predefinedseries.php
+  - http://www.worldclim.org/version2
+  - https://www.geoportal.org/
+  - ...
 
-- **Podaci daljinske detekcije (navigacija i satelitski snimci)**
 
-- **Personalni podaci i podaci sa društvenih mreža**
 ]
 
 ]
@@ -138,19 +155,19 @@ class: inverse, center, middle,
 
 .tiny[
 
-- **Ekologija**
-- **Daljinska detekcija (satelitski snimci)**
+- **&lt;font color='red'&gt;Ekologija&lt;/font&gt;**
+- **&lt;font color='red'&gt;Daljinska detekcija (satelitski snimci)&lt;/font&gt;**
 - **Ekonomija**
 - **Demografija**
 - **Arheologija**
 - **Transport**
-- **Klimatologija**
+- **&lt;font color='red'&gt;Klimatologija&lt;/font&gt;**
 - **Meteorologija** 
-- **Geo-morfometrija**
+- **&lt;font color='red'&gt;Geo-morfometrija&lt;/font&gt;**
 - **Hidrologija**
 - **Urbano planiranje**
 - **Rudarstvo**
-- **Zemljište**
+- **&lt;font color='red'&gt;Zemljište&lt;/font&gt;**
 - **Turizam**
 - **i mnogi drugi...**
 
@@ -168,107 +185,63 @@ class: inverse, center, middle,
 
 
 ---
-# Tipovi geo-prostornih podataka
-
-.pull-left[
-
-## &lt;font color='red'&gt;Vektorski podaci&lt;/font&gt;
-
-.tiny[
-
-- **Tačke, linije, poligoni (kombinacije osnovnih geometrijskih entiteta)**
-
-- **Predstavljaju diskretne objekte u prostoru**
-
-  - **Uzorkovanja (merenja) na određenim lokacijama**
-  
-  - **Granice područja**
-  
-  - **Trase i trajektorije**
-  
-- **Poznati fajl formati: ESRI Shapefile (.shp, .shx, .dbf, .prj), GeoJSON, GPX (.gpx), geopackage (.gpk)**
-
-
-]
-
-]
-
-.pull-right[
-
-
-&lt;img src="figures/vector_1.png" width="35%" style="display: block; margin: auto;" /&gt;
-`
-
-]
-
+class: inverse, center, middle,
+# Geo-prostorni podaci u R-u
 
 
 ---
-# Tipovi geo-prostornih podataka
-
-.pull-left[
-
-## &lt;font color='red'&gt;Rasterski podaci&lt;/font&gt;
-
-.tiny[
-
-- **Rasterski podaci predstavljaju mozaik manjih poligona (ćelija), najčešće kvadratnih i jednakih dimenzija, u kojem svaka čelija predstavlja vrednost prostornog fenomena u odgovarajućoj prostornoj oblasti na koju se čelija odnosi, u određenom trenutku**
-
-- **Prirodni format satelitskih i aero-snimaka zemlje iz vazduha**
-
-- **Odgovarajuči za predstavljanje kontinualnih objekata u prostoru (temperatura, nadmosrska visina, itd)**
-
-- **Poznati fajl formati: GeoTIFF, Erdas Imagine Image (.img), HDF (.hdf), NetCDF (.nc)**
+# Istorija
 
 
-]
+.large[
+- **pre-2003. - razvoj drugih paketa namenjenih prostornoj analizi (&lt;font color='red'&gt;`MASS`&lt;/font&gt;, &lt;font color='red'&gt;`spatstat`&lt;/font&gt;, &lt;font color='red'&gt;`geoR`&lt;/font&gt; itd.)**
 
-]
+- **2003. - Vienna workshop, početak rada na &lt;font color='red'&gt;`sp`&lt;/font&gt; paketu i definisanju klasa i metoda namenjenih geo-prostornim podacima**
 
-.pull-right[
+- **2003. - Publikovan paket &lt;font color='red'&gt;`rgdal`&lt;/font&gt;**
 
+- **2005. - Publikovan paket &lt;font color='red'&gt;`sp`&lt;/font&gt;**
 
-&lt;img src="figures/raster_1.png" width="35%" style="display: block; margin: auto;" /&gt;
-`
+- **2005. - Applied Spatial Data Analysis with R, 1st ed.**
 
+- **2010. - Publikovan paket &lt;font color='red'&gt;`raster`&lt;/font&gt;**
+
+- **2011. - Publikovan paket &lt;font color='red'&gt;`rgeos`&lt;/font&gt;**
+
+- **2013. - Applied Spatial Data Analysis with R, 2nd ed.**
+
+- **2016. - Publikovan paket &lt;font color='red'&gt;`sf`&lt;/font&gt;**
+
+- **2019. - Publikovan paket &lt;font color='red'&gt;`stars`&lt;/font&gt;**
+
+- **2020. - Publikovan paket &lt;font color='red'&gt;`terra`&lt;/font&gt;**
 ]
 
 
 ---
-# Višedimenzionalne strukture geo-prostornih podataka
+# Danas je to ceo univerzum
 
-.pull-left[
+**Preko 1000 paketa namenjenih geoprostornim podacima**
 
-## &lt;font color='red'&gt;Data cubes&lt;/font&gt;
+- [**sf**](https://github.com/r-spatial/sf),
+[**sp**](https://github.com/edzer/sp),
+[**terra**](https://github.com/rspatial/terra),
+[**raster**](https://github.com/rspatial/raster), [**stars**](https://github.com/r-spatial/stars), [**gdalcubes**](https://github.com/appelmar/gdalcubes_R) - klase i metode za skladištenje geo-prostornih podataka
+ 
+- [**rnaturalearth**](https://github.com/ropensci/rnaturalearth), [**osmdata**](https://github.com/ropensci/osmdata), [**getlandsat**](https://github.com/ropensci/getlandsat) - download geo-prostornih podataka
 
-.tiny[
+- [**rgrass7**](https://github.com/rsbivand/rgrass7), [**qgisprocess**](https://github.com/paleolimbot/qgisprocess), [**RSAGA**](https://github.com/r-spatial/RSAGA), [**link2GI**](https://github.com/r-spatial/link2GI) - veza sa GIS softverima
 
-- **Uključivanje vremenske komponente u prostorne podatke**
+- [**gstat**](https://github.com/r-spatial/gstat), [**mlr3**](https://github.com/mlr-org/mlr3), [**CAST**](https://github.com/HannaMeyer/CAST), [**spatstat**](http://spatstat.org/), [**spdep**](https://github.com/r-spatial/spdep), [**spatialreg**](https://github.com/r-spatial/spatialreg) - modeliranje geo-prosotrnih podataka
 
-  - **tro-dimenzionalni podaci (vektor)**
-  
-  - **četvoro-dimenzionalni podaci (raster)**
-  
-  - **više-dimenzionlani podaci**
+- [**rasterVis**](https://github.com/oscarperpinan/rastervis), [**tmap**](https://github.com/mtennekes/tmap), [**ggplot2**](https://github.com/tidyverse/ggplot2), [**rayshader**](https://github.com/tylermorganwall/rayshader) - statična vizualizacija i kartiranje
+- [**leaflet**](https://github.com/rstudio/leaflet), [**mapview**](https://github.com/r-spatial/mapview), [**mapdeck**](https://github.com/SymbolixAU/mapdeck) - interaktivna vizualizacija i kartiranje
 
-- **Odgovarajuči za predstavljanje podataka prostornog monitoringa**
+- many more...
 
-]
-
-]
-
-.pull-right[
+CRAN task view: https://cran.r-project.org/web/views/Spatial.html.
 
 
-&lt;img src="figures/space_time_1.png" width="45%" style="display: block; margin: auto;" /&gt;
-
-
-&lt;img src="figures/fig-cube4d-1.png" width="70%" style="display: block; margin: auto;" /&gt;
-
-
-&lt;img src="figures/space_time_raster.png" width="45%" style="display: block; margin: auto;" /&gt;
-
-]
 
 ---
 # Osobine geo-prostornih podataka
@@ -311,6 +284,51 @@ class: inverse, center, middle,
 
 ]
 
+
+---
+# Osobine geo-prostornih podataka
+
+.pull-left[
+
+
+.tiny[
+
+&lt;/br&gt;
+&lt;/br&gt;
+
+- **&lt;font color='red'&gt;Koordinate i koordinatni sistem&lt;/font&gt;**
+
+&lt;/br&gt;
+&lt;/br&gt;
+&lt;/br&gt;
+  
+- **Geometrija**
+
+&lt;/br&gt;
+&lt;/br&gt;
+
+- **Atributi i razmera**
+
+]
+
+]
+
+.pull-right[
+
+
+&lt;img src="figures/CS-article-1.jpg" width="65%" style="display: block; margin: auto auto auto 0;" /&gt;
+
+
+&lt;img src="figures/2019-points-lines-polygons.png" width="80%" style="display: block; margin: auto auto auto 0;" /&gt;
+
+
+&lt;img src="figures/Point_Attribute_Table.png" width="80%" style="display: block; margin: auto auto auto 0;" /&gt;
+
+]
+
+
+
+
 ---
 # Koordinate i Koordinatni Referenti Sistem (CRS)
 
@@ -319,22 +337,35 @@ class: inverse, center, middle,
 ***&lt;font color='red'&gt;"Data are not just numbers, they are numbers with a context; “In data analysis, context provides meaning”&lt;/font&gt;*** ([Cobb and Moore, 1997](http://www.jstor.org/stable/2975286))
 ]
 
+--
+
 .center[
-***&lt;font color='red'&gt;"Coordinates are not just numbers, they are numbers with a spatial context”&lt;/font&gt;***
+***&lt;font color='darkgreen'&gt;"Coordinates are not just numbers, they are numbers with a spatial context”&lt;/font&gt;***
 ]
 
 ----
 
-**Koordinatni referentni sistem predstavlja set informacija kojim se opisuje geografski prostoru u matematičkom smislu (u odnosu na Zemlju):**
+--
 
-**On uključuje:**
+**&lt;font color='red'&gt;Koordinatni Referentni Sistem (CRS)&lt;/font&gt; definiše prostorni kontekst. On predstavlja set informacija kojim se opisuje geografski prostoru u matematičkom smislu (u odnosu na Zemlju) i sastoji se od:**
 
-- set matematičkih pravila kojim se definiše kako se koordinate dodeljuju tačkama u prostoru
+- set matematičkih pravila kojim se definiše kako se koordinate dodeljuju tačkama u prostoru (koordinatni sistem)
 - set parametara koji definišu poziciju početka koordiatnog sistema, razmera i orijentacija koordinatnog sistema (datum)
 
 ----
 
-**Možemo razlikovati dve glavne grupe koordinatnih referentih sistema: &lt;font color='red'&gt;Geografski koordinatni sistemi&lt;/font&gt; i &lt;font color='red'&gt;Koordinatni sistemi u projekciji&lt;/font&gt;**
+--
+
+.pull-left[
+**Možemo razlikovati dve glavne grupe koordinatnih referentih sistema**: 
+- &lt;font color='red'&gt;Geografski koordinatni sistemi&lt;/font&gt; 
+- &lt;font color='red'&gt;Koordinatni sistemi u projekciji&lt;/font&gt;
+]
+
+.pull-right[
+&lt;img src="figures/CoordinateSystems.jpg" width="80%" style="display: block; margin: auto;" /&gt;
+]
+
 
 
 
@@ -360,7 +391,7 @@ class: inverse, center, middle,
 
 .pull-right[
 
-![](BelgradeR_2022_Milutin_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
+![](BelgradeR_2022_Milutin_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
 
 ]
 ---
@@ -378,7 +409,7 @@ class: inverse, center, middle,
 
 .pull-right[
 
-![](BelgradeR_2022_Milutin_files/figure-html/unnamed-chunk-18-1.png)&lt;!-- --&gt;
+![](BelgradeR_2022_Milutin_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
 
 ]
 
@@ -440,99 +471,370 @@ class: inverse, center, middle,
 ]
 
 
----
-# Šta obuhvata analiza geo-prostornih podataka?
-
-1. **Učitavanje i ispisivanje prostornih podataka**
-2. **Skladištenje i manipulacija podacima (klase i metode)**
-3. **Deskriptivna i ekspanatorna analiza podataka**
-4. **GIS analiza i kartiranje**
-5. **Prostorna statistična analiza (da li neka pojava može biti predstavljena statističkim modelom**
-6. **Modeliranje i prostorna predikcija**
-7. **Komunikacija**
-
-
-
-
----
-# OSGeo biblioteke
-
-.left-column[
-**[PROJ](https://www.osgeo.org/projects/proj/)**
-
-- "Konverzija koordinata"
-- Prva verzija [1970s](https://en.wikipedia.org/wiki/PROJ#cite_note-Kresse_Danko_2011_p._948-3)
-
-**[GDAL](https://www.osgeo.org/projects/gdal/)**
-
-- Geospatial Data Abstraction Library, prva verzija 2000
-- "200+ geo-prostornih fajl formata"
-
-**[GEOS](https://www.osgeo.org/projects/gdal/)**
-
-- Geometry Engine – Open Source
-
-]
-.right-column[
-&lt;a href="https://www.osgeo.org/"&gt;
-&lt;img src="https://www.osgeo.org/wp-content/themes/roots/assets/img/logo-osgeo.svg" width="80%" /&gt;
-&lt;/a&gt;
-
-&lt;div class="figure"&gt;
-&lt;img src="figures/GEOS.png" alt="GEOS build matrix" width="90%" /&gt;
-&lt;p class="caption"&gt;GEOS build matrix&lt;/p&gt;
-&lt;/div&gt;
-
-.caption[Source: https://trac.osgeo.org/geos]
-
-- Access to these three libraries used to require **sp**, **rgdal** and **rgeos**
-- Now **sf** provides a unified access to all three 🎉
-
-]
-
-
-
-
-
-
-
-
-
 
 
 ---
 class: inverse, center, middle,
-# Zašto je R fantastično okruženje za rad sa prostornim podacima?
+# Vektorski model podataka
+
 
 ---
-# Zašto R za analizu geo-prostornih podataka?
+# Vektorski model podataka
+
+.pull-left[
+
+## &lt;font color='red'&gt;Vektorski podaci&lt;/font&gt;
+
+.tiny[
+
+- **Tačke, linije, poligoni (kombinacije osnovnih geometrijskih entiteta)**
+
+- **Predstavljaju diskretne objekte u prostoru**
+
+  - **Uzorkovanja (merenja) na određenim lokacijama**
+  
+  - **Granice područja**
+  
+  - **Trase i trajektorije**
+  
+- **Poznati fajl formati: ESRI Shapefile (.shp, .shx, .dbf, .prj), GeoJSON, GPX (.gpx), geopackage (.gpk)**
+
+
+]
+
+]
+
+.pull-right[
+
+
+&lt;img src="figures/vector_1.png" width="35%" style="display: block; margin: auto;" /&gt;
+`
+
+]
+
+---
+class: hide-logo
+# &lt;font color='red'&gt;sf&lt;/font&gt; paket (revolucija u radu sa geo-prostornim podacima)
+
+&lt;img src="figures/sf_logo.gif" width="20%" style="display: block; margin: auto;" /&gt;
+
+- **&lt;font color='red'&gt;sf&lt;/font&gt; je naslednik (2016) &lt;font color='red'&gt;sp&lt;/font&gt; paketa koji omogućava klase i metode za vektorske geo-prostorne podatke.**
+
+-	**&lt;font color='red'&gt;sf&lt;/font&gt; implmenetira OGC standard `ISO 19125-1:2004` &lt;font color='red'&gt;Simple Features&lt;/font&gt;  za reprezentovanje geo-prostornih podataka**
+
+- **&lt;font color='red'&gt;sf&lt;/font&gt; omogućava funkcionalnosti dobro poznatih i proverenih biblioteka: `GDAL`, `PROJ` and `GEOS`.**
+
+-	**&lt;font color='red'&gt;sf&lt;/font&gt; classes are stored within `data.frame` like objects.**
+
+- **Komplementaran je sa &lt;font color='red'&gt;tidyverse&lt;/font&gt; familijom paketa!**
+
+???
+Simple feature is an international standard for representing and encoding spatial data, dominantly represented by point, line, and polygon geometries (ISO, 2004). The most important reason for using this approach is better manipulation of spatial data geometry, and simple way to store geometries in data corresponding record, or data.frame "row", which works very well with the tidyverse package family.
+
+
+---
+# sf ekosistem
+
+.pull-left[
+
+&lt;a href="https://www.osgeo.org/"&gt;
+&lt;img src="https://www.osgeo.org/wp-content/themes/roots/assets/img/logo-osgeo.svg" width="40%" /&gt;
+
+**[PROJ](https://www.osgeo.org/projects/proj/)**
+- "Konverzija koordinata"
+- Prva verzija [1970s](https://en.wikipedia.org/wiki/PROJ#cite_note-Kresse_Danko_2011_p._948-3)
+
+**[GDAL](https://www.osgeo.org/projects/gdal/)**
+- Geospatial Data Abstraction Library, prva verzija 2000
+- "200+ geo-prostornih fajl formata"
+
+**[GEOS](https://www.osgeo.org/projects/gdal/)**
+- Geometry Engine – Open Source
+
+
+
+]
+
+.pull-right[
+
+&lt;img src="figures/sf-infrastructure.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+# sf geometrije
+
+&lt;img src="figures/fig-sfgeometries-1.png" width="50%" style="display: block; margin: auto;" /&gt;
+
+---
+# sf klasa inside
+
+&lt;img src="figures/sf_classes.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+
+---
+class: inverse, center, middle,
+# Rasterski model podataka
+
+---
+# Rasterski model podataka
+
+.pull-left[
+
+## &lt;font color='red'&gt;Rasterski podaci&lt;/font&gt;
+
+.tiny[
+
+- **Rasterski podaci predstavljaju mozaik manjih poligona (ćelija), najčešće kvadratnih i jednakih dimenzija, u kojem svaka čelija predstavlja vrednost prostornog fenomena u odgovarajućoj prostornoj oblasti na koju se čelija odnosi, u određenom trenutku**
+
+- **Prirodni format satelitskih i aero-snimaka zemlje iz vazduha**
+
+- **Odgovarajuči za predstavljanje kontinualnih objekata u prostoru (temperatura, nadmosrska visina, itd)**
+
+- **Poznati fajl formati: GeoTIFF, Erdas Imagine Image (.img), HDF (.hdf), NetCDF (.nc)**
+
+
+]
+
+]
+
+.pull-right[
+
+
+&lt;img src="figures/raster_1.png" width="35%" style="display: block; margin: auto;" /&gt;
+`
+
+]
+
+
+
+---
+# &lt;font color='red'&gt;terra&lt;/font&gt; paket
+
+- **terra** omogućava klase i metode za rasterske podatke (naslednik `raster` paketa)
+
+- Omogućava kreiranje, učitavanje, manipulaciju i pisanje jedno-dimenzionalnih i više-dimenzionalnih (single and multiband) rasterskih podataka
+
+- Omogućava rad sa rasterskim podacima koji su skladišteni na disku (suviše veliki za učitavanje u memoriju)
+
+- Omogućava funkcionalnosti rasterske algebre: 
+  1. **Lokalne operacije** - operacije nad ćelijama (pojedinačno)
+  2. **Fokalne operacije** - rezultat **focal** operacija je najčešće rezultat analize bloka okolnih ćelija (najlešće 3x3) 
+  3. **Zonalne operacije** - operacije služe za sumiranje rastera po određenim zonama, definisanim vektorskim prostornim objektom,
+  4. **Globalne operacije** - služe za sumiranje vrednost jednog ili više rasterskih lejera.
+
+- Dodatne funkcionalnosti (`crop`, `merge`, `aggregate`, `resample`) kao i dodatne funkcionalnosti za analizu DMT-a
+
+
+???
+
+A notable feature of the terra package is that it can work with raster datasets that are stored on disk and are too large to be loaded into memory (RAM). The package can work with large files because the objects it creates from these files only contain information about the structure of the data, such as the number of rows and columns, the spatial extent, and the filename, but it does not attempt to read all the cell values in memory. In computations with these objects, data is processed in chunks. If no output filename is specified to a function, and the output raster is too large to keep in memory, the results are written to a temporary file.
+
+---
+# &lt;font color='red'&gt;terra&lt;/font&gt; klase podataka
+
+&lt;/br&gt;
+
+- **`SpatRaster`** - multi-lejer objekat koji je namenjen radu sa velikim rasterskim podacima koji ne mogu biti skaldišteni u radnom memoriji računara.  On skladišti niz osnovnih parametara koji ga opisuju. To uključuje broj kolona i redova, koordinate njegovog prostornog obuhvata (eng. extent) i koordinatni referentni sistem (projekcija). 
+
+- **SpatVector** - vektorski model podataka
+
+- **SpatExtent** - klasa za predstavljanje prostornog obuhvata (spatial extent) 
+
+
+---
+class: inverse, center, middle,
+# Data Cubes - Višedimenzionalne strukture geo-prostornih podataka
+
+
+---
+# Data Cubes
+
+.pull-left[
+
+.tiny[
+
+- **Uključivanje vremenske komponente u prostorne podatke**
+
+  - **tro-dimenzionalni podaci (vektor)**
+  
+  - **četvoro-dimenzionalni podaci (raster)**
+  
+  - **više-dimenzionlani podaci**
+
+- **Odgovarajuči za predstavljanje podataka prostornog monitoringa**
+
+]
+
+]
+
+.pull-right[
+
+
+&lt;img src="figures/space_time_1.png" width="45%" style="display: block; margin: auto;" /&gt;
+
+
+&lt;img src="figures/fig-cube4d-1.png" width="70%" style="display: block; margin: auto;" /&gt;
+
+
+&lt;img src="figures/space_time_raster.png" width="45%" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+---
+# &lt;font color='red'&gt;spacetime&lt;/font&gt; paket
+
+.pull-left[
+
+- Publikovan 2010. godine
+
+- Klase i metode za različite tipove prostorno-vremenskih vektorskih podataka
+
+- Oslanja se na `sp` (prostor) i `xts` (vreme) klase.
+
+]
+
+.pull-right[
+
+&lt;img src="figures/spacetime_edzer.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+# &lt;font color='red'&gt;spacetime&lt;/font&gt; paket
+
+.pull-left[
+
+**Slučajevi prostorno-vremenskih podataka**
+
+&lt;img src="figures/spacetime_layouts.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+]
+
+**Klase prostorno-vremenskih podataka**
+
+.pull-left[
+
+&lt;img src="figures/spacetime_classes.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+]
+
+
+---
+# &lt;font color='red'&gt;stars&lt;/font&gt; paket
+
+
+.pull-left[
+
+- **stars** obezbedjuje klase i metode za reprezentovanje prostorno-vremenskih (**rasterskih** i vektorskih) podataka
+
+- Namenjen je radu sa vremenskim serijama prevashodno rasterskih podataka (satelitskim snimcima)
+
+- Cilj razvijanja ovog paketa je da omogući:
+
+  1. Rad sa rasterskim podacima koji je dobro integrisan sa `sf` i `tidyverse` paketima
+  2. Rad sa rasterskim podacima kao više-dimenzionalnim nizovima (arrays)
+  3. Rad sa velikim setovima podataka (out-of-memory) pomoću `raster_proxy` objekata
+  4. Rad sa različitim vrstama rasterskih podataka (regular, rotated, sheared, rectilinear and curvilinear rasters)
+
+- https://r-spatial.github.io/stars/
+]
+
+.pull-right[
+&lt;img src="figures/cube2.png" width="80%" style="display: block; margin: auto;" /&gt;
+]
+
+---
+# &lt;font color='red'&gt;gdalcubes&lt;/font&gt; paket
+
+## Harmonizacija vremenskih serija rasterskih podataka
+
+**`gdalcubes`** je namenjen kreiranju harmonizovanih "data cubes" formi rasterskih podataka od različitih kolekcija (vremenskih serija) više-dimenzionalnih rasterskih podataka, u slučajevima kada:
+
+- Prostorna rezolucija nije ista
+
+- Prostorni obuhvat nije isti
+
+- Koordinatni referentni sistemi nisu isti
+
+- Vreme opažanja (uzorkovanja) nije isto
+
+
+
+???
+- Images from different areas of the world have different spatial reference systems (e.g., UTM zones).
+- The pixel size of a single image sometimes differs among its spectral bands / variables.
+- Spatially adjacent image tiles often overlap.
+- Time series of images are often irregular when the area of interest covers spatial areas larger than the extent of a single image.
+- Images from different data products or different satellites are distributed in diverse data formats and structures.
+
+
+
+---
+# &lt;font color='red'&gt;sftime&lt;/font&gt; paket
+
+- **`sftime` - predstavlja proširenje `sf` klasa za skladištenje i manipulaciju prostorno-vremenskim vektorskim podacima**
+
+- **Prvi put publikovan u martu 2022. godine**
+
+- **Kreiran je sa ciljem na nadomesti nedostatke `stars` paketa u pogledu geometrije i regularnosti vremenske serije podataka**
+
+
+---
+class: inverse, center, middle,
+# Analiza geo-prostornih podataka u R-u
+
+
+---
+class: inverse, center, middle
+
+*"Spatial data science treats location, distance, and spatial interaction as core aspects of the data and employs specialized methods and software to store, retrieve, explore, analyze, visualize and learn from such data. In this sense, spatial data science relates to data science as spatial statistics to statistics, spatial databases to databases, and geocomputation to computation."*
+
+.right[Luc Anselin, 2019]
+.right["Spatial Data Science" in The International Encyclopedia of Geography: People, the Earth, Environment, and Technology.]
+
+
+---
+# Šta obuhvata analiza geo-prostornih podataka?
+
+1. **Učitavanje i ispisivanje geo-prostornih podataka**
+
+2. **Skladištenje (klase i metode) podataka**
+
+3. **Pregled i manipulacija podacima**
+
+3. **Deskriptivna i ekspanatorna analiza podataka**
+
+4. **Konverzija i transformacija koordinata**
+
+5. **GIS analiza i kartiranje**
+
+6. **Statistična i geostatistička analiza**
+
+7. **Modeliranje i prostorna predikcija**
+
+8. **Komunikacija i publikacija**
+
+
+???
+
+Analiza geoprostornih podataka se ne razlikuje puno od analize drugih podataka. Već prostorni podaci daju još jednu veliku mogućnost, a to je mogućnost vizualizacije.
+
+
+---
+# Zašto bih odabrao R za analizu geo-prostornih podataka
+
 
 - Moguća je kompletna analiza
 - Lako podeliti kartu sa drugima (email, html...)
 
----
-class: inverse, center, middle, 
-
-# &lt;font color='red'&gt;terra paket&lt;/font&gt;
 
 
----
-# Klase rasterskih podataka u &lt;font color='red'&gt;terra&lt;/font&gt; paketu
 
-**`terra`** paket omogućava metode za manipulaciju i rad sa prostornim podacima u rasterskom i vektorskom formatu. Osnovne klase u `terra` paketu su sledeće
 
-* **`SpatRaster`**
 
-* **`SpatVector`**
 
-* **`SpatExtent`**
-
----
-# &lt;font color='red'&gt;SpatRaster&lt;/font&gt;
-
-&lt;/br&gt;
-
-**`SpatRaster`** je multi-lejer objekat koji je namenjen radu sa velikim rasterskim podacima koji ne mogu biti skaldišteni u radnom memoriji računara.  On skladišti niz osnovnih parametara koji ga opisuju. To uključuje broj kolona i redova, koordinate njegovog prostornog obuhvata (eng. extent) i koordinatni referentni sistem (projekcija). Pored toga, SpatRaster može da skladišti informacije o fajlovima u kojima se čuvaju vrednosti rasterskih ćelija. 
 
 
 
