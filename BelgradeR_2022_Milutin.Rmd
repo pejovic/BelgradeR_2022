@@ -55,7 +55,7 @@ knitr::include_graphics("figures/MilutinPejovic_crop.jpg")
 knitr::include_graphics("figures/PetarBursac.jpg")
 ```
 
-.center[**Petar Bursac, dipl.geod.inž.**]
+.center[**Petar Bursac, mast.inž.geod.**]
 
 ]
 
