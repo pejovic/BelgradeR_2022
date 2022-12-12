@@ -84,6 +84,17 @@ knitr::include_graphics("figures/PetarBursac.jpg")
 
 - 2022 - <font color='red'>Geoinformatika</font> - novi studijski program na Građevinskom fakultetu 
 
+
+---
+class: inverse, center, middle
+
+*"Spatial data science treats location, distance, and spatial interaction as core aspects of the data and employs specialized methods and software to store, retrieve, explore, analyze, visualize and learn from such data. In this sense, spatial data science relates to data science as spatial statistics to statistics, spatial databases to databases, and geocomputation to computation."*
+
+.right[Luc Anselin, 2019]
+.right["Spatial Data Science" in The International Encyclopedia of Geography: People, the Earth, Environment, and Technology.]
+
+
+
 ---
 class: inverse, center, middle,
 # Šta su to geo-prostorni podaci?
@@ -185,7 +196,7 @@ knitr::include_graphics('figures/lidar-vs-photogrammetry-drone.jpg')
 - **Meteorologija** 
 - **<font color='red'>Geo-morfometrija</font>**
 - **Hidrologija**
-- **Urbano planiranje**
+- **<font color='red'>Poljoprivreda</font>**
 - **Rudarstvo**
 - **<font color='red'>Zemljište</font>**
 - **Turizam**
@@ -412,28 +423,9 @@ knitr::include_graphics('figures/CoordinateSystems.jpg')
 
 
 
-
 ---
-# Geografski (geodetski) koordinatni sistem
+# Opis koordinatnog sistema
 
-
-.pull-left[
-
-- **Podrzumevaju definisane: elipsoid, početni meridian (podrazumevan), datum**
-
-</br>
-
-
-- **Određuju poziciju u okviru elipsoidnog koordinatnog referentnog sistema**
-
-  - **Geografska širina i dužina (Latitude, longitude) i elispoidna visina**
-  
-  - **Geocentrični metrički sistem (X, Y, Z)**
-  
-]
-
-
-.pull-right[
 
 ```{r echo=FALSE, massage=FALSE}
 
@@ -442,55 +434,19 @@ suppressPackageStartupMessages(suppressWarnings(library(here)))
 suppressPackageStartupMessages(suppressWarnings(library(tmap)))
 suppressPackageStartupMessages(suppressWarnings(library(tidyverse)))
 
-GK <- "+proj=tmerc +lat_0=0 +lon_0=21 +k=0.9999 +x_0=7500000 +y_0=0 +ellps=bessel +towgs84=574.027,170.175,401.545,4.88786,-0.66524,-13.24673,0.99999311 +units=m"
-
-srbija <- suppressMessages(st_read(here::here("data", "Srbija", "RAP.shp"), quiet = TRUE))
-
-srbija_wgs <- st_transform(srbija, 4326)
-
-srbija_gk <- st_transform(srbija, GK)
-
-ggplot(srbija) + geom_sf() + theme_bw()
-
 ```
 
-]
----
-# Koordinatni sistemi u projekciji
-
-.pull-left[
-
-- **Podrzumevaju definisane: elipsoid, početni meridian (podrazumevan), datum i parametre projekcije**
-
-</br>
-
-- **Pozicija se određuje pravouglim koordinatama (Easting, Northing)**
-
-]
-
-.pull-right[
-
-```{r echo=FALSE}
-
-ggplot(srbija_gk) + geom_sf() + coord_sf(datum = st_crs(GK)) + theme_bw()
-
-```
-
-]
-
----
-# Opis koordinatnog sistema
-
-
-.pull-left[
-**Dva prustupa su najzastupljenija:**
-
-- CRS codes, e.g., EPSG:4326
-- `WKT2`
 
 **Do sada najzastupljeniji, ali u svom zalasku:**
 
 - `proj4string` - `r st_crs(4326)$proj4string`
+
+
+.pull-left[
+**Dva preporučena pristupa:**
+
+- CRS codes, e.g., EPSG:4326
+- `WKT2`
 
 ----
 
@@ -865,14 +821,6 @@ knitr::include_graphics("figures/cube2.png")
 class: inverse, center, middle,
 # Analiza geo-prostornih podataka u R-u
 
-
----
-class: inverse, center, middle
-
-*"Spatial data science treats location, distance, and spatial interaction as core aspects of the data and employs specialized methods and software to store, retrieve, explore, analyze, visualize and learn from such data. In this sense, spatial data science relates to data science as spatial statistics to statistics, spatial databases to databases, and geocomputation to computation."*
-
-.right[Luc Anselin, 2019]
-.right["Spatial Data Science" in The International Encyclopedia of Geography: People, the Earth, Environment, and Technology.]
 
 
 ---

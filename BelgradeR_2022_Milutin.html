@@ -47,7 +47,7 @@ background-size: cover
 
 &lt;img src="figures/PetarBursac.jpg" width="50%" style="display: block; margin: auto;" /&gt;
 
-.center[**Petar Bursac, dipl.geod.inž.**]
+.center[**Petar Bursac, mast.inž.geod.**]
 
 ]
 
@@ -75,6 +75,17 @@ background-size: cover
   - 2016 - GeoMLA (Geostatistics and Machine Learning) conference; keynote speakers: Mikhail Kanevski, Mirko Orlić, Wolfgang Wagner, Ole Einar Tveito, Tomislav Hengl. 
 
 - 2022 - &lt;font color='red'&gt;Geoinformatika&lt;/font&gt; - novi studijski program na Građevinskom fakultetu 
+
+
+---
+class: inverse, center, middle
+
+*"Spatial data science treats location, distance, and spatial interaction as core aspects of the data and employs specialized methods and software to store, retrieve, explore, analyze, visualize and learn from such data. In this sense, spatial data science relates to data science as spatial statistics to statistics, spatial databases to databases, and geocomputation to computation."*
+
+.right[Luc Anselin, 2019]
+.right["Spatial Data Science" in The International Encyclopedia of Geography: People, the Earth, Environment, and Technology.]
+
+
 
 ---
 class: inverse, center, middle,
@@ -165,7 +176,7 @@ class: inverse, center, middle,
 - **Meteorologija** 
 - **&lt;font color='red'&gt;Geo-morfometrija&lt;/font&gt;**
 - **Hidrologija**
-- **Urbano planiranje**
+- **&lt;font color='red'&gt;Poljoprivreda&lt;/font&gt;**
 - **Rudarstvo**
 - **&lt;font color='red'&gt;Zemljište&lt;/font&gt;**
 - **Turizam**
@@ -368,64 +379,23 @@ CRAN task view: https://cran.r-project.org/web/views/Spatial.html.
 
 
 
-
----
-# Geografski (geodetski) koordinatni sistem
-
-
-.pull-left[
-
-- **Podrzumevaju definisane: elipsoid, početni meridian (podrazumevan), datum**
-
-&lt;/br&gt;
-
-
-- **Određuju poziciju u okviru elipsoidnog koordinatnog referentnog sistema**
-
-  - **Geografska širina i dužina (Latitude, longitude) i elispoidna visina**
-  
-  - **Geocentrični metrički sistem (X, Y, Z)**
-  
-]
-
-
-.pull-right[
-
-![](BelgradeR_2022_Milutin_files/figure-html/unnamed-chunk-16-1.png)&lt;!-- --&gt;
-
-]
----
-# Koordinatni sistemi u projekciji
-
-.pull-left[
-
-- **Podrzumevaju definisane: elipsoid, početni meridian (podrazumevan), datum i parametre projekcije**
-
-&lt;/br&gt;
-
-- **Pozicija se određuje pravouglim koordinatama (Easting, Northing)**
-
-]
-
-.pull-right[
-
-![](BelgradeR_2022_Milutin_files/figure-html/unnamed-chunk-17-1.png)&lt;!-- --&gt;
-
-]
-
 ---
 # Opis koordinatnog sistema
 
 
-.pull-left[
-**Dva prustupa su najzastupljenija:**
 
-- CRS codes, e.g., EPSG:4326
-- `WKT2`
+
 
 **Do sada najzastupljeniji, ali u svom zalasku:**
 
 - `proj4string` - +proj=longlat +datum=WGS84 +no_defs
+
+
+.pull-left[
+**Dva preporučena pristupa:**
+
+- CRS codes, e.g., EPSG:4326
+- `WKT2`
 
 ----
 
@@ -785,14 +755,6 @@ class: inverse, center, middle,
 class: inverse, center, middle,
 # Analiza geo-prostornih podataka u R-u
 
-
----
-class: inverse, center, middle
-
-*"Spatial data science treats location, distance, and spatial interaction as core aspects of the data and employs specialized methods and software to store, retrieve, explore, analyze, visualize and learn from such data. In this sense, spatial data science relates to data science as spatial statistics to statistics, spatial databases to databases, and geocomputation to computation."*
-
-.right[Luc Anselin, 2019]
-.right["Spatial Data Science" in The International Encyclopedia of Geography: People, the Earth, Environment, and Technology.]
 
 
 ---
