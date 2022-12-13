@@ -221,7 +221,7 @@ knitr::include_graphics("figures/water-detection.png")
 ]
 
 ---
-# Osobine geo-prostornih podataka
+# Komponente geo-prostornih podataka
 
 .pull-left[
 
@@ -231,13 +231,13 @@ knitr::include_graphics("figures/water-detection.png")
 </br>
 </br>
 
-- **Koordinate i koordinatni sistem**
+- **Geometrija**
 
 </br>
 </br>
 </br>
   
-- **Geometrija**
+- **Koordinate i koordinatni sistem**
 
 </br>
 </br>
@@ -251,19 +251,19 @@ knitr::include_graphics("figures/water-detection.png")
 .pull-right[
 
 
-```{r, echo=FALSE, out.width='65%', fig.align='left'}
-knitr::include_graphics('figures/CS-article-1.jpg')
-
-```
-
-
-```{r, echo=FALSE, out.width='80%', fig.align='left'}
+```{r, echo=FALSE, out.width='80%', fig.align='center'}
 knitr::include_graphics('figures/2019-points-lines-polygons.png')
 
 ```
 
 
-```{r, echo=FALSE, out.width='80%', fig.align='left'}
+```{r, echo=FALSE, out.width='65%', fig.align='center'}
+knitr::include_graphics('figures/CS-article-1.jpg')
+
+```
+
+
+```{r, echo=FALSE, out.width='80%', fig.align='center'}
 knitr::include_graphics('figures/Point_Attribute_Table.png')
 
 ```
