@@ -114,7 +114,7 @@ class: inverse, center, middle,
 
 - **Digitalno predstavljaju prirodne i antropogene objekte, prostorne pojave i dogadjaje stavljajući ih u kontekst geografskog prostora**
 
-- **GPS je operativan od 2000 godine.**
+- **Veliku ulogu je odigrao GPS!**
 
 - **In 2008, more than 150 Earth observation satellites were in orbit, recording data with both passive and active sensors and acquiring more than 10 terabits of data daily. (Fifty Years of Earth-observation Satellites by A. Tatem, S. Goetz, S. Hay)**
 
@@ -191,11 +191,11 @@ knitr::include_graphics('figures/lidar-vs-photogrammetry-drone.jpg')
 - **<font color='red'>Ekologija</font>**
 - **<font color='red'>Daljinska detekcija (satelitski snimci)</font>**
 - **Ekonomija**
-- **Demografija**
+- **<font color='red'>Demografija</font>**
 - **Arheologija**
 - **Transport**
 - **<font color='red'>Klimatologija</font>**
-- **Meteorologija** 
+- **<font color='red'>Meteorologija</font>** 
 - **<font color='red'>Geo-morfometrija</font>**
 - **Hidrologija**
 - **<font color='red'>Poljoprivreda</font>**
@@ -219,76 +219,6 @@ knitr::include_graphics("figures/water-detection.png")
 ```
 
 ]
-
-
----
-class: inverse, center, middle,
-# Geo-prostorni podaci u R-u
-
-
----
-# Istorija
-
-
-.large[
-- **pre-2003. - razvoj drugih paketa namenjenih prostornoj analizi (<font color='red'>`MASS`</font>, <font color='red'>`spatstat`</font>, <font color='red'>`geoR`</font> itd.)**
-
-- **2003. - Vienna workshop, početak rada na <font color='red'>`sp`</font> paketu i definisanju klasa i metoda namenjenih geo-prostornim podacima**
-
-- **2003. - Publikovan paket <font color='red'>`rgdal`</font>**
-
-- **2005. - Publikovan paket <font color='red'>`sp`</font>**
-
-- **2005. - Applied Spatial Data Analysis with R, 1st ed.**
-
-- **2010. - Publikovan paket <font color='red'>`raster`</font>**
-
-- **2011. - Publikovan paket <font color='red'>`rgeos`</font>**
-
-- **2013. - Applied Spatial Data Analysis with R, 2nd ed.**
-
-- **2016. - Publikovan paket <font color='red'>`sf`</font>**
-
-- **2019. - Publikovan paket <font color='red'>`stars`</font>**
-
-- **2020. - Publikovan paket <font color='red'>`terra`</font>**
-]
-
-
----
-# Danas je dostupno preko 1000 paketa
-
-.pull-left[
-- [**sf**](https://github.com/r-spatial/sf),
-[**sp**](https://github.com/edzer/sp),
-[**terra**](https://github.com/rspatial/terra),
-[**raster**](https://github.com/rspatial/raster), [**stars**](https://github.com/r-spatial/stars), [**gdalcubes**](https://github.com/appelmar/gdalcubes_R) - klase i metode za skladištenje geo-prostornih podataka
- 
-- [**rnaturalearth**](https://github.com/ropensci/rnaturalearth), [**osmdata**](https://github.com/ropensci/osmdata), [**getlandsat**](https://github.com/ropensci/getlandsat) - download geo-prostornih podataka
-
-- [**rgrass7**](https://github.com/rsbivand/rgrass7), [**qgisprocess**](https://github.com/paleolimbot/qgisprocess), [**RSAGA**](https://github.com/r-spatial/RSAGA), [**link2GI**](https://github.com/r-spatial/link2GI) - veza sa GIS softverima
-
-- [**gstat**](https://github.com/r-spatial/gstat), [**mlr3**](https://github.com/mlr-org/mlr3), [**CAST**](https://github.com/HannaMeyer/CAST), [**spatstat**](http://spatstat.org/), [**spdep**](https://github.com/r-spatial/spdep), [**spatialreg**](https://github.com/r-spatial/spatialreg) - modeliranje geo-prosotrnih podataka
-
-- [**rasterVis**](https://github.com/oscarperpinan/rastervis), [**tmap**](https://github.com/mtennekes/tmap), [**ggplot2**](https://github.com/tidyverse/ggplot2), [**rayshader**](https://github.com/tylermorganwall/rayshader) - statična vizualizacija i kartiranje
-- [**leaflet**](https://github.com/rstudio/leaflet), [**mapview**](https://github.com/r-spatial/mapview), [**mapdeck**](https://github.com/SymbolixAU/mapdeck) - interaktivna vizualizacija i kartiranje
-
-- i mnogi drugi...
-
-CRAN task view: https://cran.r-project.org/web/views/Spatial.html.
-]
-
-.pull-right[
-
-</br>
-
-```{r, echo=FALSE, out.width='80%', fig.align='center'}
-knitr::include_graphics('figures/rspatial_cluster.png')
-
-```
-
-]
-
 
 ---
 # Osobine geo-prostornih podataka
@@ -487,6 +417,78 @@ st_crs(4326)
 
 ---
 class: inverse, center, middle,
+# Geo-prostorni podaci u R-u
+
+
+---
+# Istorija
+
+
+.large[
+- **pre-2003. - razvoj drugih paketa namenjenih prostornoj analizi (<font color='red'>`MASS`</font>, <font color='red'>`spatstat`</font>, <font color='red'>`geoR`</font> itd.)**
+
+- **2003. - Vienna workshop, početak rada na <font color='red'>`sp`</font> paketu i definisanju klasa i metoda namenjenih geo-prostornim podacima**
+
+- **2003. - Publikovan paket <font color='red'>`rgdal`</font>**
+
+- **2005. - Publikovan paket <font color='red'>`sp`</font>**
+
+- **2005. - Applied Spatial Data Analysis with R, 1st ed.**
+
+- **2010. - Publikovan paket <font color='red'>`raster`</font>**
+
+- **2011. - Publikovan paket <font color='red'>`rgeos`</font>**
+
+- **2013. - Applied Spatial Data Analysis with R, 2nd ed.**
+
+- **2016. - Publikovan paket <font color='red'>`sf`</font>**
+
+- **2019. - Publikovan paket <font color='red'>`stars`</font>**
+
+- **2020. - Publikovan paket <font color='red'>`terra`</font>**
+]
+
+
+---
+# Danas je dostupno preko 1000 paketa
+
+.pull-left[
+- [**sf**](https://github.com/r-spatial/sf),
+[**sp**](https://github.com/edzer/sp),
+[**terra**](https://github.com/rspatial/terra),
+[**raster**](https://github.com/rspatial/raster), [**stars**](https://github.com/r-spatial/stars), [**gdalcubes**](https://github.com/appelmar/gdalcubes_R) - klase i metode za skladištenje geo-prostornih podataka
+ 
+- [**rnaturalearth**](https://github.com/ropensci/rnaturalearth), [**osmdata**](https://github.com/ropensci/osmdata), [**getlandsat**](https://github.com/ropensci/getlandsat) - download geo-prostornih podataka
+
+- [**rgrass7**](https://github.com/rsbivand/rgrass7), [**qgisprocess**](https://github.com/paleolimbot/qgisprocess), [**RSAGA**](https://github.com/r-spatial/RSAGA), [**link2GI**](https://github.com/r-spatial/link2GI) - veza sa GIS softverima
+
+- [**gstat**](https://github.com/r-spatial/gstat), [**mlr3**](https://github.com/mlr-org/mlr3), [**CAST**](https://github.com/HannaMeyer/CAST), [**spatstat**](http://spatstat.org/), [**spdep**](https://github.com/r-spatial/spdep), [**spatialreg**](https://github.com/r-spatial/spatialreg) - modeliranje geo-prosotrnih podataka
+
+- [**rasterVis**](https://github.com/oscarperpinan/rastervis), [**tmap**](https://github.com/mtennekes/tmap), [**ggplot2**](https://github.com/tidyverse/ggplot2), [**rayshader**](https://github.com/tylermorganwall/rayshader) - statična vizualizacija i kartiranje
+- [**leaflet**](https://github.com/rstudio/leaflet), [**mapview**](https://github.com/r-spatial/mapview), [**mapdeck**](https://github.com/SymbolixAU/mapdeck) - interaktivna vizualizacija i kartiranje
+
+- i mnogi drugi...
+
+CRAN task view: https://cran.r-project.org/web/views/Spatial.html.
+]
+
+.pull-right[
+
+</br>
+
+```{r, echo=FALSE, out.width='80%', fig.align='center'}
+knitr::include_graphics('figures/rspatial_cluster.png')
+
+```
+
+]
+
+
+
+
+
+---
+class: inverse, center, middle,
 # Vektorski model podataka
 
 
@@ -637,19 +639,15 @@ knitr::include_graphics('figures/raster_1.png')
 
 
 ---
-# <font color='red'>terra</font> paket
+# <font color='red'>terra</font> paket (naslednik <font color='red'>raster</font> paketa)
 
-- **terra** omogućava klase i metode za rasterske podatke (naslednik `raster` paketa)
+- **terra** omogućava klase (`SpatRaster`, `SpatVector`, `SpatExtent`) i metode za rasterske podatke 
 
 - Omogućava kreiranje, učitavanje, manipulaciju i pisanje jedno-dimenzionalnih i više-dimenzionalnih (single and multiband) rasterskih podataka
 
 - Omogućava rad sa rasterskim podacima koji su skladišteni na disku (suviše veliki za učitavanje u memoriju)
 
-- Omogućava funkcionalnosti rasterske algebre: 
-  1. **Lokalne operacije** - operacije nad ćelijama (pojedinačno)
-  2. **Fokalne operacije** - rezultat **focal** operacija je najčešće rezultat analize bloka okolnih ćelija (najlešće 3x3) 
-  3. **Zonalne operacije** - operacije služe za sumiranje rastera po određenim zonama, definisanim vektorskim prostornim objektom,
-  4. **Globalne operacije** - služe za sumiranje vrednost jednog ili više rasterskih lejera.
+- Omogućava funkcionalnosti rasterske algebre (lokalne, fokalne, zonalne, globalne)
 
 - Dodatne funkcionalnosti (`crop`, `merge`, `aggregate`, `resample`) kao i dodatne funkcionalnosti za analizu DMT-a
 
@@ -658,16 +656,6 @@ knitr::include_graphics('figures/raster_1.png')
 
 A notable feature of the terra package is that it can work with raster datasets that are stored on disk and are too large to be loaded into memory (RAM). The package can work with large files because the objects it creates from these files only contain information about the structure of the data, such as the number of rows and columns, the spatial extent, and the filename, but it does not attempt to read all the cell values in memory. In computations with these objects, data is processed in chunks. If no output filename is specified to a function, and the output raster is too large to keep in memory, the results are written to a temporary file.
 
----
-# <font color='red'>terra</font> klase podataka
-
-</br>
-
-- **`SpatRaster`** - multi-lejer objekat koji je namenjen radu sa velikim rasterskim podacima koji ne mogu biti skaldišteni u radnom memoriji računara.  On skladišti niz osnovnih parametara koji ga opisuju. To uključuje broj kolona i redova, koordinate njegovog prostornog obuhvata (eng. extent) i koordinatni referentni sistem (projekcija). 
-
-- **SpatVector** - vektorski model podataka
-
-- **SpatExtent** - klasa za predstavljanje prostornog obuhvata (spatial extent) 
 
 
 ---
@@ -730,6 +718,13 @@ knitr::include_graphics('figures/space_time_raster.png')
 
 - Oslanja se na `sp` (prostor) i `xts` (vreme) klase.
 
+</br>
+
+```{r, echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('figures/spacetime_classes_all.png')
+
+```
+
 ]
 
 .pull-right[
@@ -740,32 +735,6 @@ knitr::include_graphics('figures/spacetime_edzer.png')
 ```
 
 ]
-
----
-# <font color='red'>spacetime</font> paket
-
-.pull-left[
-
-**Slučajevi prostorno-vremenskih podataka**
-
-```{r, echo=FALSE, out.width='80%', fig.align='center'}
-knitr::include_graphics('figures/spacetime_layouts.png')
-
-```
-
-]
-
-**Klase prostorno-vremenskih podataka**
-
-.pull-left[
-
-```{r, echo=FALSE, out.width='80%', fig.align='center'}
-knitr::include_graphics('figures/spacetime_classes.png')
-
-```
-
-]
-
 
 ---
 # <font color='red'>stars</font> paket
@@ -831,7 +800,7 @@ knitr::include_graphics("figures/cube2.png")
 
 ---
 class: inverse, center, middle,
-# Analiza geo-prostornih podataka u R-u
+# Analiza geo-prostornih podataka
 
 
 
@@ -886,7 +855,7 @@ Analiza geoprostornih podataka se ne razlikuje puno od analize drugih podataka. 
 
 
 ---
-# Analiza do-2015.
+# Retrospektiva: do-2015.
 
 .pull-left[
 
@@ -914,7 +883,7 @@ knitr::include_graphics('figures/geostatistics.png')
 ]
 
 ---
-# Analiza 2015-2020
+# Retrospektiva: 2015-2020
 
 .pull-left[
 
@@ -945,7 +914,7 @@ knitr::include_graphics('figures/ML_in_geo.png')
 ]
 
 ---
-# Analiza od-2020
+# Retrospektiva: od-2020
 
 .pull-left[
 
