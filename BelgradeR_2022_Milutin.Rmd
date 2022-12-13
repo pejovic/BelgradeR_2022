@@ -70,11 +70,11 @@ knitr::include_graphics("figures/PetarBursac.jpg")
 
 - 2004 - Master akademske studije Geoinformatike.
 
-- 2008 - Laboratorija za razvoj geoporostornih tehnologija otvorenog koda [OSGL](http://osgl.grf.bg.ac.rs/en/)
+- 2015 - Laboratorija za razvoj geoporostornih tehnologija otvorenog koda [OSGL](http://osgl.grf.bg.ac.rs/en/)
 
 - Kursevi i konferencije:
 
-  - 2007 - GEOSTAT Belgrade workshop  - lectures: Tomislav Hengl
+  - 2008 - GEOSTAT Belgrade workshop  - lectures: Tomislav Hengl
   
   - 2011 - GEOSTAT 2011 workshop - lectures: Victor Olaya, Tomislav Hengl
   
@@ -256,10 +256,9 @@ class: inverse, center, middle,
 
 
 ---
-# Danas je to ceo univerzum
+# Danas je dostupno preko 1000 paketa
 
-**Preko 1000 paketa namenjenih geoprostornim podacima**
-
+.pull-left[
 - [**sf**](https://github.com/r-spatial/sf),
 [**sp**](https://github.com/edzer/sp),
 [**terra**](https://github.com/rspatial/terra),
@@ -277,7 +276,18 @@ class: inverse, center, middle,
 - i mnogi drugi...
 
 CRAN task view: https://cran.r-project.org/web/views/Spatial.html.
+]
 
+.pull-right[
+
+</br>
+
+```{r, echo=FALSE, out.width='80%', fig.align='center'}
+knitr::include_graphics('figures/rspatial_cluster.png')
+
+```
+
+]
 
 
 ---
@@ -825,26 +835,49 @@ class: inverse, center, middle,
 
 
 
+
+
 ---
-# Šta obuhvata analiza geo-prostornih podataka?
+# Šta obuhvata i zašto R?
 
-1. **Učitavanje i ispisivanje geo-prostornih podataka**
+.pull-left[
+1. **Učitavanje i ispisivanje geo-prostornih podataka** - **<font color='red'>gdal, osmdata, rnaturalearth, getlandsat </font>**
 
-2. **Skladištenje (klase i metode) podataka**
+2. **Skladištenje (klase i metode) podataka** - **<font color='red'>sf (sp), terra (raster), stars, sftime</font>**
 
-3. **Pregled i manipulacija podacima**
+3. **Pregled i manipulacija podacima** - **<font color='red'>tidyverse</font>**
 
-3. **Deskriptivna i ekspanatorna analiza podataka**
+3. **Deskriptivna i ekspanatorna analiza podataka** - **<font color='red'>R</font>**
 
-4. **Konverzija i transformacija koordinata**
+4. **Konverzija i transformacija koordinata** - **<font color='red'>proj</font>**
 
-5. **GIS analiza i kartiranje**
+5. **GIS analiza i kartiranje** - **<font color='red'>ggplot, ggmap, maps, rasterVis tmap, mapview ...</font>**
 
-6. **Statistična i geostatistička analiza**
+6. **Statistična i geostatistička analiza** - **<font color='red'>gstat, spdep, spatstat ...</font>**
 
-7. **Modeliranje i prostorna predikcija**
+7. **Modeliranje i prostorna predikcija** - **<font color='red'>mlr (mlr3spatiotempcv, mlr3spatial), tidymodels, ...</font>**
 
-8. **Komunikacija i publikacija**
+8. **Komunikacija i publikacija** - **<font color='red'>shiny, rmarkdown (quarto)</font>**
+
+]
+
+--
+
+.pull-right[
+
+.center[
+
+</br>
+</br>
+
+### **<font color='red'>Tajna je u jedinstvenoj i potpuno zaokruženoj kombinaciji fantastičnih mogućnosti R-a i specijalizovanih paketa za geoprostorne podatke</font>**
+
+</br>
+]
+
+
+
+]
 
 
 ???
@@ -853,13 +886,100 @@ Analiza geoprostornih podataka se ne razlikuje puno od analize drugih podataka. 
 
 
 ---
-# Zašto bih odabrao R za analizu geo-prostornih podataka
+# Analiza do-2015.
+
+.pull-left[
+
+- **Geostatistika**
+
+  - **Kvantifikacija prostorne zavisnosti (Variogram, Moran I, spatial cluster analysis ...)**
+  
+  - **Kriging (simple and ordinary)**
+  
+  - **Uključivanje pomoćnjih promenljvih - Regression Kriging**
+  
+  - **Prostorno-vremenska geostatistika (gstat-krigeST) - modeliranje prostorno vremenske zavisnosti**
+  
+  - **2D/2D+T predikcija**
+]
+
+.pull-right[
 
 
-- Moguća je kompletna analiza
-- Lako podeliti kartu sa drugima (email, html...)
+```{r, echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('figures/geostatistics.png')
+
+```
+
+]
+
+---
+# Analiza 2015-2020
+
+.pull-left[
+
+- **Ogromna količina prostornih podataka postaje sve dostupnija!**
+
+----
+
+- **Machine Learning with Spatial Data**
+
+  - **Penalized linear models**
+  
+  - **Tree based models (Random Forest)**
+  
+  - **Ensemble ML models**
+
+]
+
+.pull-right[
 
 
+```{r, echo=FALSE, out.width='85%', fig.align='center'}
+knitr::include_graphics('figures/ML_in_geo.png')
+
+```
+
+
+
+]
+
+---
+# Analiza od-2020
+
+.pull-left[
+
+.center[
+
+### Deep Learning and Remote Sensing
+
+```{r, echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('figures/deep_learning_fig2.png')
+
+```
+
+```{r, echo=FALSE, out.width='100%', fig.align='center'}
+knitr::include_graphics('figures/deep_learning_fig.png')
+
+```
+
+]
+
+]
+
+.pull-right[
+
+
+```{r, echo=FALSE, out.width='80%', fig.align='center'}
+knitr::include_graphics('figures/deep_learning.png')
+
+```
+
+]
+
+---
+class: inverse, center, middle,
+# Hvala na pažnji!
 
 
 

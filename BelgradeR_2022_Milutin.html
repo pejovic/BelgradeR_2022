@@ -62,11 +62,11 @@ background-size: cover
 
 - 2004 - Master akademske studije Geoinformatike.
 
-- 2008 - Laboratorija za razvoj geoporostornih tehnologija otvorenog koda [OSGL](http://osgl.grf.bg.ac.rs/en/)
+- 2015 - Laboratorija za razvoj geoporostornih tehnologija otvorenog koda [OSGL](http://osgl.grf.bg.ac.rs/en/)
 
 - Kursevi i konferencije:
 
-  - 2007 - GEOSTAT Belgrade workshop  - lectures: Tomislav Hengl
+  - 2008 - GEOSTAT Belgrade workshop  - lectures: Tomislav Hengl
   
   - 2011 - GEOSTAT 2011 workshop - lectures: Victor Olaya, Tomislav Hengl
   
@@ -232,10 +232,9 @@ class: inverse, center, middle,
 
 
 ---
-# Danas je to ceo univerzum
+# Danas je dostupno preko 1000 paketa
 
-**Preko 1000 paketa namenjenih geoprostornim podacima**
-
+.pull-left[
 - [**sf**](https://github.com/r-spatial/sf),
 [**sp**](https://github.com/edzer/sp),
 [**terra**](https://github.com/rspatial/terra),
@@ -253,7 +252,15 @@ class: inverse, center, middle,
 - i mnogi drugi...
 
 CRAN task view: https://cran.r-project.org/web/views/Spatial.html.
+]
 
+.pull-right[
+
+&lt;/br&gt;
+
+&lt;img src="figures/rspatial_cluster.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+]
 
 
 ---
@@ -759,26 +766,49 @@ class: inverse, center, middle,
 
 
 
+
+
 ---
-# Šta obuhvata analiza geo-prostornih podataka?
+# Šta obuhvata i zašto R?
 
-1. **Učitavanje i ispisivanje geo-prostornih podataka**
+.pull-left[
+1. **Učitavanje i ispisivanje geo-prostornih podataka** - **&lt;font color='red'&gt;gdal, osmdata, rnaturalearth, getlandsat &lt;/font&gt;**
 
-2. **Skladištenje (klase i metode) podataka**
+2. **Skladištenje (klase i metode) podataka** - **&lt;font color='red'&gt;sf (sp), terra (raster), stars, sftime&lt;/font&gt;**
 
-3. **Pregled i manipulacija podacima**
+3. **Pregled i manipulacija podacima** - **&lt;font color='red'&gt;tidyverse&lt;/font&gt;**
 
-3. **Deskriptivna i ekspanatorna analiza podataka**
+3. **Deskriptivna i ekspanatorna analiza podataka** - **&lt;font color='red'&gt;R&lt;/font&gt;**
 
-4. **Konverzija i transformacija koordinata**
+4. **Konverzija i transformacija koordinata** - **&lt;font color='red'&gt;proj&lt;/font&gt;**
 
-5. **GIS analiza i kartiranje**
+5. **GIS analiza i kartiranje** - **&lt;font color='red'&gt;ggplot, ggmap, maps, rasterVis tmap, mapview ...&lt;/font&gt;**
 
-6. **Statistična i geostatistička analiza**
+6. **Statistična i geostatistička analiza** - **&lt;font color='red'&gt;gstat, spdep, spatstat ...&lt;/font&gt;**
 
-7. **Modeliranje i prostorna predikcija**
+7. **Modeliranje i prostorna predikcija** - **&lt;font color='red'&gt;mlr (mlr3spatiotempcv, mlr3spatial), tidymodels, ...&lt;/font&gt;**
 
-8. **Komunikacija i publikacija**
+8. **Komunikacija i publikacija** - **&lt;font color='red'&gt;shiny, rmarkdown (quarto)&lt;/font&gt;**
+
+]
+
+--
+
+.pull-right[
+
+.center[
+
+&lt;/br&gt;
+&lt;/br&gt;
+
+### **&lt;font color='red'&gt;Tajna je u jedinstvenoj i potpuno zaokruženoj kombinaciji fantastičnih mogućnosti R-a i specijalizovanih paketa za geoprostorne podatke&lt;/font&gt;**
+
+&lt;/br&gt;
+]
+
+
+
+]
 
 
 ???
@@ -787,13 +817,85 @@ Analiza geoprostornih podataka se ne razlikuje puno od analize drugih podataka. 
 
 
 ---
-# Zašto bih odabrao R za analizu geo-prostornih podataka
+# Analiza do-2015.
+
+.pull-left[
+
+- **Geostatistika**
+
+  - **Kvantifikacija prostorne zavisnosti (Variogram, Moran I, spatial cluster analysis ...)**
+  
+  - **Kriging (simple and ordinary)**
+  
+  - **Uključivanje pomoćnjih promenljvih - Regression Kriging**
+  
+  - **Prostorno-vremenska geostatistika (gstat-krigeST) - modeliranje prostorno vremenske zavisnosti**
+  
+  - **2D/2D+T predikcija**
+]
+
+.pull-right[
 
 
-- Moguća je kompletna analiza
-- Lako podeliti kartu sa drugima (email, html...)
+&lt;img src="figures/geostatistics.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+# Analiza 2015-2020
+
+.pull-left[
+
+- **Ogromna količina prostornih podataka postaje sve dostupnija!**
+
+----
+
+- **Machine Learning with Spatial Data**
+
+  - **Penalized linear models**
+  
+  - **Tree based models (Random Forest)**
+  
+  - **Ensemble ML models**
+
+]
+
+.pull-right[
 
 
+&lt;img src="figures/ML_in_geo.png" width="85%" style="display: block; margin: auto;" /&gt;
+
+
+
+]
+
+---
+# Analiza od-2020
+
+.pull-left[
+
+.center[
+
+### Deep Learning and Remote Sensing
+
+&lt;img src="figures/deep_learning_fig2.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+&lt;img src="figures/deep_learning_fig.png" width="100%" style="display: block; margin: auto;" /&gt;
+
+]
+
+]
+
+.pull-right[
+
+
+&lt;img src="figures/deep_learning.png" width="80%" style="display: block; margin: auto;" /&gt;
+
+]
+
+---
+class: inverse, center, middle,
+# Hvala na pažnji!
 
 
 
