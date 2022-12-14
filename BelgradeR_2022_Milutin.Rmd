@@ -272,7 +272,7 @@ knitr::include_graphics('figures/Point_Attribute_Table.png')
 
 
 ---
-# Osobine geo-prostornih podataka
+# Komponente geo-prostornih podataka
 
 .pull-left[
 
@@ -282,13 +282,13 @@ knitr::include_graphics('figures/Point_Attribute_Table.png')
 </br>
 </br>
 
-- **<font color='red'>Koordinate i koordinatni sistem</font>**
+- **Geometrija**
 
 </br>
 </br>
 </br>
   
-- **Geometrija**
+- **<font color='red'>Koordinate i koordinatni sistem</font>**
 
 </br>
 </br>
@@ -302,25 +302,24 @@ knitr::include_graphics('figures/Point_Attribute_Table.png')
 .pull-right[
 
 
-```{r, echo=FALSE, out.width='65%', fig.align='left'}
-knitr::include_graphics('figures/CS-article-1.jpg')
-
-```
-
-
-```{r, echo=FALSE, out.width='80%', fig.align='left'}
+```{r, echo=FALSE, out.width='80%', fig.align='center'}
 knitr::include_graphics('figures/2019-points-lines-polygons.png')
 
 ```
 
 
-```{r, echo=FALSE, out.width='80%', fig.align='left'}
+```{r, echo=FALSE, out.width='65%', fig.align='center'}
+knitr::include_graphics('figures/CS-article-1.jpg')
+
+```
+
+
+```{r, echo=FALSE, out.width='80%', fig.align='center'}
 knitr::include_graphics('figures/Point_Attribute_Table.png')
 
 ```
 
 ]
-
 
 
 
@@ -824,7 +823,7 @@ class: inverse, center, middle,
 
 6. **Statistična i geostatistička analiza** - **<font color='red'>gstat, spdep, spatstat ...</font>**
 
-7. **Modeliranje i prostorna predikcija** - **<font color='red'>mlr (mlr3spatiotempcv, mlr3spatial), tidymodels, ...</font>**
+7. **Modeliranje i prostorna predikcija** - **<font color='red'>mlr, tidymodels</font>**
 
 8. **Komunikacija i publikacija** - **<font color='red'>shiny, rmarkdown (quarto)</font>**
 
