@@ -2,6 +2,8 @@
 # 2020-12-14
 # Autor: Petar Bursac i Milutin Pejovic
 
+rm(list = ls())
+
 # ucitavanje osnovnih paketa
 library(raster)
 library(caret)
@@ -21,6 +23,7 @@ library(reshape2)
 
 set.seed(2022)
 
+mapviewOptions(fgb = FALSE)
 
 # Funkcije
 # ------------------------------------------------------------------------------
@@ -60,7 +63,7 @@ trainSites <- readxl::read_xlsx("Data_demo/Example_3/soc.points.cleaned.xlsx", c
   as.data.frame()
 
 trainSites %<>% dplyr::rename(
-  SOC = SOC_procenat, 
+  SOC = SOC_procenat,
   prcp_ann = prcp_ann_2020_wgs84,
   slp_ann = slp_ann_2020_wgs84,
   tmax_ann = tmax_ann_2020_wgs84,
@@ -81,10 +84,10 @@ tac_sf %<>% dplyr::select(ID, SOC) %>%
   dplyr::rename(`SOC [%]` = SOC) 
 
 pal1 <- viridisLite::viridis(6, direction = -1)
-pal2 <- viridisLite::inferno(6, direction = 1)
-pal3 <- viridisLite::magma(6, direction = 1)
-pal4 <- rev(RColorBrewer::brewer.pal(6, "Spectral"))
-pal5 <- RColorBrewer::brewer.pal(6, "Pastel2")
+# pal2 <- viridisLite::inferno(6, direction = 1)
+# pal3 <- viridisLite::magma(6, direction = 1)
+# pal4 <- rev(RColorBrewer::brewer.pal(6, "Spectral"))
+# pal5 <- RColorBrewer::brewer.pal(6, "Pastel2")
 
 
 my_theme <- function(base_size = 10, base_family = "sans"){
@@ -138,7 +141,6 @@ tac_map <- ggplot() +
 
 tac_map
 
-mapviewOptions(fgb = FALSE)
 mapview(tac_sf, zcol = "SOC [%]", layer.name = "SOC [%]") + mapview(gran_sf, col.regions = "lightblue", legend = FALSE)
 
 hist.soc <- ggplot(data = tac_sf, aes(`SOC [%]`)) +
@@ -230,17 +232,17 @@ soc_split <- sample(nrow(trainSites), 3/4 * nrow(trainSites))
 soc_train <- trainSites[soc_split, ] %>% as.data.frame() # 903 
 soc_test <- trainSites[-soc_split, ] %>% as.data.frame() # 301
 
-soc_fun <- as.formula(paste("SOC_procenat", paste(names(soc_train)[c(3:14)], collapse = "+"), sep = "~"))
+soc_fun <- as.formula(paste("SOC", paste(names(soc_train)[c(3:16)], collapse = "+"), sep = "~"))
 
 # Trening hiperparametara
 # -----------------------------------------------
 
-rf.task <- makeRegrTask(data = soc_train %>% as.data.frame(), target = "SOC_procenat")
+rf.task <- makeRegrTask(data = soc_train %>% as.data.frame(), target = "SOC")
 
 estimateTimeTuneRanger(rf.task, iters = 50 , num.threads = 15, num.trees = 1000)
 
 tune.model <- tuneRanger(rf.task, 
-                         measure = list(rmse),  
+                         measure = list(rrse),  
                          num.trees = 1000,
                          num.threads = 15, 
                          iters = 150, 
@@ -268,7 +270,7 @@ pred.soc <- predict(rf, data = soc_test)
 # ------------------------------------------------------------------------------
 
 # test setu
-df_acc_test <- data_frame(obs = soc_test$SOC_procenat, pred = pred.soc$predictions)
+df_acc_test <- data_frame(obs = soc_test$SOC, pred = pred.soc$predictions)
 
 caret::R2(pred = df_acc_test$pred, obs = df_acc_test$obs) 
 nrmse_func(obs = df_acc_test$obs, pred = df_acc_test$pred, type = "mean") 

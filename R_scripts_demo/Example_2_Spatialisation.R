@@ -4,7 +4,12 @@
 
 # Primer - Prostorizacija vrednosti emisije zagađenja na području Republike Srbije
 
-# Vrednosti emisije zagađenja po polutantima SO2, NOx, PM10, PM2.5, NMVOC i NH3 prostorizovati po izvorima zagađenja (tačkastih, linijskih i površinskih kategorija). 
+# Vrednosti emisije zagađenja po polutantima: 
+# - SO2 (sumpor dioksid), 
+# - NOx (azotni oksidi), 
+# - PM10, PM2.5 (suspendovane čestice), 
+# - NMVOC i (Nemetanska isparljiva organska jedinjenja)
+# - NH3 (amonijak) prostorizovati po izvorima zagađenja (tačkastih, linijskih i površinskih kategorija). 
 # Vrednosti sumirati po ćelijama grida za područje teritorije Republike Srbije.
 
 # Učitati u R okruženje izvore zagađivača sa vrednostima po svim polutantima. Podaci su u vektorskom obliku, u formatu `ESRI shapefile`.
@@ -349,9 +354,12 @@ mapview(map.3Da1, zcol = "Spatialised", layer.name = "Spatialised 1A3bi_R")
 # Kreiranje jedinstvenog grida
 # ------------------------------------------------------------------------------
 
-data.spat.list <- list(p.1A1a_ep, p.1A3bi_R, p.3Da1)                                                   
+# data.spat.list <- list(p.1A1a_ep, p.1A3bi_R, p.3Da1)                                                   
+# 
+# sf_data <- data.spat.list[[1]]
 
-sf_data <- data.spat.list[[1]]
+sf_data <- p.1A3bi_R
+  
 suppressMessages(
 for(i in 2:length(data.spat.list)){
  sf_data <- st_join(sf_data, data.spat.list[[i]], join = st_equals) %>%
