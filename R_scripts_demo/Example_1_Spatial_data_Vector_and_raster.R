@@ -19,6 +19,8 @@ library(mapview)
 library(ggspatial)
 library(RStoolbox)
 
+mapviewOptions(fgb = FALSE) 
+
 # http://www.geo.hunter.cuny.edu/~ssun/R-Spatial/intro.html
 
 # Primer 1 - vekotrski podaci
@@ -26,6 +28,9 @@ library(RStoolbox)
 
 # Uictavanje podataka
 # ------------------------------------------------------------------------------
+
+# OpenStreetMap podaci za deo podrucja Grada Beograda
+# Geofabrik baza podataka - https://download.geofabrik.de/
 
 tacke <- sf::st_read(dsn = "Data_demo/Example_1/OSM_Beograd.gpkg", layer = "Tacke") %>% dplyr::select(-name)
 linije <- sf::st_read(dsn = "Data_demo/Example_1/OSM_Beograd.gpkg", layer = "Putevi") %>% dplyr::select(-name)
@@ -45,6 +50,8 @@ head(tacke_df, 10)
 # CRS - Coordinat Reference System reprezentacija
 # ------------------------------------------------------------------------------
 
+# Baza dostupnih EPSG kodova - https://epsg.io/
+
 crs_wgs84 <- st_crs(4326) # WGS84 elipsoidni koordinatni sistem ima EPSG kod 4326
 class(crs_wgs84) 
 crs_wgs84 # kod crs objekta uočavaju se dve stvari: EPSG kod i WKT2 string
@@ -52,14 +59,16 @@ cat(crs_wgs84$wkt) # direktan pristup wkt elementu crs objekta
 crs_wgs84$epsg # direktan pristup epsg elementu crs objekta
 crs_wgs84$proj4string # direktan pristup proj4string elementu crs objekta
 
-# Kreiranje sf objekta i transformacija u koordinatni sistem u projekciji
+# Kreiranje sf objekta i konverzija u koordinatni sistem u projekciji
 # ------------------------------------------------------------------------------
 tacke <- st_as_sf(tacke_df, coords = c("lon", "lat"), crs = 4326)
+st_crs(32634)
 tacke %<>% st_transform(32634)
 
-st_crs(tacke)
-
-
+# Pregled dostupnih podataka
+tacke
+linije
+poligoni
 
 # Geo-vizuelizacija 
 # ------------------------------------------------------------------------------
@@ -73,7 +82,7 @@ plot(poligoni)
 
 # ggplot 
 # ------------------------------------------------------------------------------
-library(ggsflabel)
+
 # Plot settings
 my_theme <- function(base_size = 10, base_family = "sans"){
   theme_minimal(base_size = base_size, base_family = base_family) +
@@ -100,7 +109,7 @@ theme_set(my_theme())
 tac_map <- ggplot() +
   geom_sf(data = tacke,
           aes(color = fclass)) +
-  labs(# title = "Spatial distribution of point of interest across Belgrade",
+  labs(# title = "Spatial distribution of points of interest across Belgrade",
     col = "fclass: ",
     xlab = "Longitude [°]",
     ylab = "Latitude [°]")+
@@ -110,13 +119,16 @@ tac_map <- ggplot() +
         axis.text.x = element_text(colour = "black"), 
         axis.text.y = element_text(colour = "black"),
         legend.position = "none")+
-  coord_sf(crs = 4326)+
+  coord_sf(datum = sf::st_crs(32634))+
   annotation_north_arrow(location = "tr", which_north = "true",
                          pad_x = unit(0.5, "in"), pad_y = unit(0.5, "in"),
                          style = north_arrow_fancy_orienteering)
 
   
 tac_map
+
+ggplot() +
+  geom_sf(data = linije)
 
 lin_map <- ggplot() +
   geom_sf(data = linije,
@@ -125,23 +137,21 @@ lin_map <- ggplot() +
     col = "fclass: ",
     xlab = "Longitude [°]",
     ylab = "Latitude [°]")+
-  my_theme() +
+  #my_theme() +
   theme(panel.grid = element_line(color = "black"), 
         panel.background = element_rect(fill = "white"), 
         axis.text.x = element_text(colour = "black"), 
         axis.text.y = element_text(colour = "black"),
         legend.position = "bottom")+
-  coord_sf(crs = 4326)+
+  coord_sf(datum = sf::st_crs(32634))+
   annotation_north_arrow(location = "tr", which_north = "true",
                          pad_x = unit(0.5, "in"), pad_y = unit(0.5, "in"),
                          style = north_arrow_fancy_orienteering)
-
 
 lin_map
 
 poligoni %<>% dplyr::mutate(type = case_when(is.na(type) ~ "unclassified",
                                              !is.na(type) ~ type))
-
 
 pol_map <- ggplot() +
   geom_sf(data = poligoni,
@@ -156,7 +166,7 @@ pol_map <- ggplot() +
         axis.text.x = element_text(colour = "black"), 
         axis.text.y = element_text(colour = "black"),
         legend.position = "bottom")+
-  coord_sf(crs = 4326)+
+  coord_sf(datum = sf::st_crs(32634))+
   annotation_north_arrow(location = "tr", which_north = "true",
                          pad_x = unit(0.5, "in"), pad_y = unit(0.5, "in"),
                          style = north_arrow_fancy_orienteering)
@@ -173,7 +183,6 @@ gridExtra::grid.arrange(tac_map + theme(legend.position = "none"),
 # mapview - interaktivna web karta
 # ------------------------------------------------------------------------------
 
-mapviewOptions(fgb = FALSE) 
 mapview(tacke) + 
   mapview(linije, zcol = "fclass") + 
   mapview(poligoni, zcol = "type")
@@ -184,6 +193,8 @@ mapview(tacke) +
 
 # Primer kreiranja rastera
 # ------------------------------------------------------------------------------
+
+# Putem paketa "raster"
 
 extent(7440500, 7475000, 4948000, 4976500) # xmin, xmax, ymin, ymax
 podrucje_beograda <- raster(extent(7440500, 7475000, 4948000, 4976500), res = 100)
@@ -202,10 +213,19 @@ crs(podrucje_beograda) <- CRS(SRS_string = "EPSG:3909") # an sp CRS object
 cat(wkt(podrucje_beograda))
 
 
-mapview::mapview(podrucje_beograda, 
-                 na.color = "transparent", 
-                 trim = TRUE)
+# Putem paketa "terra"
 
+podrucje_beograda <- rast(xmin = 7440500, xmax = 7475000, ymin = 4948000, ymax = 4976500, resolution = 100)
+values(podrucje_beograda) <- rnorm(ncell(podrucje_beograda)) 
+podrucje_beograda # CRS:NA
+terra::crs(podrucje_beograda) <- "epsg:3909"
+plot(podrucje_beograda)
+
+
+mapview::mapview(stars::st_as_stars(podrucje_beograda), 
+                 na.color = "transparent", 
+                 trim = TRUE, 
+                 layer.name = "Random field")
 
 
 # Multispektralni satelitski podaci
@@ -224,15 +244,18 @@ files.ms <- list.files("Data_demo/Example_1/Multispektralni_snimci/",
 
 files.ms
 
+# Putem paketa "raster"
 rasStack <- lapply(files.ms, stack)
 rasStack
+
+# Putem paketa "terra"
+spatStack <- rast(files.ms)
 
 # cat(wkt(rasStack[[1]]))
 # 
 # for(i in 1:length(rasStack)){
 #   crs(rasStack[[i]]) <- 32634
 # }
-
 
 # Funkcija za vizuelizaciju podataka u formi kolor kompozita i falš kolor kompozita:
 # ------------------------------------------------------------------------------
@@ -290,7 +313,6 @@ rasListNDVI
 
 names(rasListNDVI) <- paste(files.names, "_NDVI", sep = "")
 names(rasListNDVI)
-
 
 plotS2parcel <- function(listS2parc = listS2parc, listS2parcNDVI = listS2parcNDVI, files.names = files.names, id = 1){
   c.plot <- ggRGB(listS2parc[[id]], r = 3, g = 2, b = 1) +
@@ -366,12 +388,23 @@ library(leafsync)
 sync(mv1, mv2, mv3, ncol = 2)
 
 
-# Kao objekat terra paketa
+# # Kao objekat terra paketa
+# # ------------------------------------------------------------------------------
+# 
+# ndvi.terra <- rast(rasListNDVI[[1]])
+# plot(ndvi.terra)
+# 
+
+
+# Mapedit
 # ------------------------------------------------------------------------------
 
-ndvi.terra <- rast(rasListNDVI[[1]])
-plot(ndvi.terra)
+library(mapedit)
 
+kartirani_entiteti <- mapedit::editMap()
+kartirani_entiteti
+
+mapview::mapview(kartirani_entiteti)
 
 
 

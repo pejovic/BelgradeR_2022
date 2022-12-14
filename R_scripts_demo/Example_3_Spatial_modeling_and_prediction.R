@@ -17,6 +17,7 @@ library(mlr)
 library(tidymodels)
 library(classInt)
 library(ggspatial)
+library(reshape2) 
 
 set.seed(2022)
 
@@ -76,8 +77,8 @@ gran_sf <- sf::st_read("Data_demo/Example_3/Granica_Vojvodine.gpkg")
 # ------------------------------------------------------------------------------
 
 tac_sf <- st_as_sf(trainSites, coords = c("lon", "lat"), crs = 4326)
-tac_sf %<>% dplyr::select(ID, SOC_procenat) %>%
-  dplyr::rename(`SOC [%]` = SOC_procenat)
+tac_sf %<>% dplyr::select(ID, SOC) %>%
+  dplyr::rename(`SOC [%]` = SOC) 
 
 pal1 <- viridisLite::viridis(6, direction = -1)
 pal2 <- viridisLite::inferno(6, direction = 1)
@@ -155,7 +156,6 @@ hist.soc
 
 # Korelacija predikotra
 # ------------------------------------------------------------------------------
-library(reshape2) 
 
 # Get lower triangle of the correlation matrix
 get_lower_tri<-function(cormat){
@@ -176,12 +176,14 @@ reorder_cormat <- function(cormat){
   cormat <-cormat[hc$order, hc$order]
 }
 
-cormat <- round(cor(trainSites),2)
+cormat <- round(cor(trainSites %>% dplyr::select(-ID)),2)
+
 # Reorder the correlation matrix
-# cormat <- reorder_cormat(cormat)
 upper_tri <- get_upper_tri(cormat)
+
 # Melt the correlation matrix
 melted_cormat <- melt(upper_tri, na.rm = TRUE)
+
 # Create a ggheatmap
 ggheatmap <- ggplot(melted_cormat, aes(Var2, Var1, fill = value))+
   geom_tile(color = "white")+
@@ -219,20 +221,21 @@ gg1
 # ------------------------------------------------------------------------------
 
 set.seed(124)
+ 
+# soc_split <- initial_split(trainSites, prop = 0.70, strata = SOC)
+# soc_train <- training(soc_split)
+# soc_test  <-  testing(soc_split)
 
-soc_split <- initial_split(trainSites, prop = 0.70, strata = SOC_procenat)
-soc_train <- training(soc_split)
-soc_test  <-  testing(soc_split)
+soc_split <- sample(nrow(trainSites), 3/4 * nrow(trainSites))
+soc_train <- trainSites[soc_split, ] %>% as.data.frame() # 903 
+soc_test <- trainSites[-soc_split, ] %>% as.data.frame() # 301
 
-# soc_folds <- vfold_cv(soc_train, v = 5)
-
-soc_fun <- as.formula(paste("SOC_procenat", paste(names(soc_train)[c(5:16)], collapse = "+"), sep = "~"))
-
+soc_fun <- as.formula(paste("SOC_procenat", paste(names(soc_train)[c(3:14)], collapse = "+"), sep = "~"))
 
 # Trening hiperparametara
 # -----------------------------------------------
 
-rf.task <- makeRegrTask(data = soc_train, target = "SOC_procenat")
+rf.task <- makeRegrTask(data = soc_train %>% as.data.frame(), target = "SOC_procenat")
 
 estimateTimeTuneRanger(rf.task, iters = 50 , num.threads = 15, num.trees = 1000)
 
@@ -248,32 +251,35 @@ tune.model$model
 # Model
 # ------------------------------------------------------------------------------
 
-rf <- ranger(SOC_procenat ~ ., data = trainSites, num.threads = 15, keep.inbag = TRUE, mtry = 5, num.trees = 1000, min.node.size = 2, sample.fraction = 0.8506121, importance = 'impurity')
+rf <- ranger(soc_fun, 
+             data = soc_train, 
+             num.threads = 15, 
+             keep.inbag = TRUE, 
+             mtry = 5, 
+             num.trees = 1000, 
+             min.node.size = 2, 
+             sample.fraction = 0.8506121, 
+             importance = 'impurity')
 rf
 
-pred.soc <- predict(rf.soc, data = soc.test)
+pred.soc <- predict(rf, data = soc_test)
 
 # Ocena performansi modela na test setu
 # ------------------------------------------------------------------------------
 
-# na trening setu
-df_acc <- data_frame(obs = soc.train$SOC_procenat, pred = rf.soc$predictions)
-
-caret::R2(pred = df_acc$pred, obs = df_acc$obs) 
-nrmse_func(obs = df_acc$obs, pred = df_acc$pred, type = "mean") 
-nmae_func(obs = df_acc$obs, pred = df_acc$pred, type = "mean") 
-
-# na test setu
-df_acc_test <- data_frame(obs = soc.test$SOC_procenat, pred = pred.soc$predictions)
+# test setu
+df_acc_test <- data_frame(obs = soc_test$SOC_procenat, pred = pred.soc$predictions)
 
 caret::R2(pred = df_acc_test$pred, obs = df_acc_test$obs) 
 nrmse_func(obs = df_acc_test$obs, pred = df_acc_test$pred, type = "mean") 
 nmae_func(obs = df_acc_test$obs, pred = df_acc_test$pred, type = "mean") 
+caret::RMSE(pred = df_acc_test$pred, obs = df_acc_test$obs) 
+
 
 # Variable importance
 # ------------------------------------------------------------------------------
 
-df.imp <- rf.soc$variable.importance %>%
+df.imp <- rf$variable.importance %>%
   as.data.frame() %>%
   dplyr::rename(importance = ".") %>%
   tibble::rownames_to_column(., "variable") %>% as.data.frame()
@@ -302,16 +308,83 @@ imp.rf
 # Predikcija
 # ------------------------------------------------------------------------------
 
-# ubaci stack sa prediktprima
-# a sliku koja je na serveru u prezentaciju
 
-# ali onda ubaci dva finalna rastera sa predikcijom
+theme_map <- function(...) {
+  theme_minimal() +
+    theme(
+      axis.title.x = element_blank(),
+      axis.title.y = element_blank(),
+      axis.line = element_blank(),
+      axis.text.x = element_blank(),
+      axis.text.y = element_blank(),
+      axis.ticks = element_blank(),
+      panel.grid.major = element_blank(),
+      panel.grid.minor = element_blank(),
+      plot.background = element_rect(fill = NA, color = NA),
+      panel.background = element_rect(fill = NA, color = NA),
+      legend.background = element_rect(fill = NA, color = NA),
+      panel.border = element_blank(),
+      ...
+    )
+}
 
-# i dovrsi prezentaciju
+# Karta organskog ugljenika
+
+pal_soc <- c("#440154", "#471467", "#472677", "#453781", "#3f4689", "#39558b", "#32638d", "#2c708e", "#287d8e", "#228a8e", "#1f968b", "#20a386", "#29af7f", "#3cbc74", "#56c766", "#73d055", "#94d840", "#b8df29", "#dce319", "#fde725")
+cut_soc <- c(1.24, 1.45, 1.47, 1.48, 1.49, 1.5, 1.50746647977831, 1.51358362722399, 1.52123006153109, 1.52734720897677, 1.53499364328387, 1.54264007759096, 1.5533450856209, 1.57016724109652, 1.62, 1.7, 1.75, 1.78, 1.81, 2.78)
+
+rast_pred_soc <- raster::raster("Data_demo/Example_3/SOC_Vojvodina_g_kg_CERESpredicition.tif")
+pred_spdf_soc <- as(rast_pred_soc, "SpatialPixelsDataFrame")
+
+soc_rast <- as.data.frame(pred_spdf_soc) %>%
+  rename(`SOC [g/kg]` = `SOC_Vojvodina_g_kg_CERESpredicition`) %>%
+  mutate(ValueCut = cut(`SOC [g/kg]`, breaks = cut_soc))
+
+karta_soc <- ggplot() +
+  geom_raster(data = soc_rast, aes(x = x,
+                                   y = y,
+                                   fill = ValueCut)) +
+  scale_fill_manual(values = pal_soc,  name = "SOC [g/kg]")+
+  theme_map() +
+  theme(legend.position = "right") +
+  #edit legends
+  guides(fill = guide_legend(reverse = TRUE))
 
 
+karta_soc
 
 
+mapview(rast_pred_soc, layer.name = "SOC", na.color = "transparent", trim = TRUE, na.label = NA)
 
+# Karta zaliha organskog ugljenika - SOC Stock
+
+pal_stock <- c("#404040", "#5a5a5a", "#737373", "#8d8d8d", "#a7a7a7", "#bebebe", "#cccccc", "#dbdbdb", "#eaeaea", "#f8f8f8", "#fef6f2", "#fce3d8", "#fad0bd", "#f7bda3", "#f5aa89", "#ee8b72", "#e5685e", "#dc4549", "#d32234", "#ca0020")
+cut_stock <- c(11, 14.6, 15.1, 15.4, 15.6, 15.8, 15.9, 16.1, 16.3, 16.5, 16.6, 16.8, 17, 17.2, 17.3, 17.6, 17.8, 18.3, 19.1, 29)
+
+
+rast_pred <- raster::raster("Data_demo/Example_3/SOC_Stock_Vojvodina_kg_m2_CERESpredicition.tif")
+pred_spdf <- as(rast_pred, "SpatialPixelsDataFrame")
+
+stock_rast <- as.data.frame(pred_spdf) %>%
+  rename(`SOC Stock [kg/m2]` = `SOC_Stock_Vojvodina_kg_m2_CERESpredicition`) %>%
+  mutate(ValueCut=cut(`SOC Stock [kg/m2]`, breaks = cut_stock))
+
+karta_soc_stock <- ggplot() +
+  geom_raster(data = stock_rast, aes(x = x,
+                                     y = y,
+                                     fill = ValueCut)) +# alpha = value,
+  #scale_alpha(name = "", range = c(0.5,1))  +
+  # scale_fill_distiller(palette = "BrBG", direction = -1) +
+  # scale_fill_viridis(option = "H", direction = 1) + # D
+  scale_fill_manual(values = pal_stock,  name = "SOC Stock [kg/m2]")+
+  theme_map() +
+  theme(legend.position = "right") +
+  #edit legends
+  guides(fill = guide_legend(reverse = TRUE))
+
+karta_soc_stock
+
+
+mapview(rast_pred, layer.name = "SOC Stock", na.color = "transparent", trim = TRUE, na.label = NA)
 
 
