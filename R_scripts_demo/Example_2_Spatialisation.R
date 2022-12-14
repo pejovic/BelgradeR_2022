@@ -17,9 +17,9 @@
 
 # Podaci su dobijeni za sledeće kategorije:
 
-# - 1A1a - Public electricity production (tačkasti izvor)
-# - 1A3bi_R - Road Transport: Passengers cars - Rural transport (linijski izvor)
-# - 3Da1 - Inorganic N-fertilizers (površinski izvor)
+# - 1A1a - Public electricity production (tačkasti izvor) - Javna proizvodnja električne energije
+# - 1A3bi_R - Road Transport: Passengers cars - Rural transport (linijski izvor) - Putna vozila - ruralna sredina
+# - 3Da1 - Inorganic N-fertilizers (površinski izvor) - Neorganska djubriva
 
 # Ucitavanje paketa
 rm(list = ls())
@@ -67,7 +67,7 @@ CLC_12_18 %<>% st_transform(4326)
  
 gridWGS84 <- st_read(dsn = "Data_demo/Example_2/Grid_Serbia_0.05deg.gpkg")
 gridWGS84
-
+plot(gridWGS84$geom)
 
 # Presek i sumiranje vrednosti polutanata po kategorijama po ćelijama grida
 # ------------------------------------------------------------------------------
@@ -81,7 +81,7 @@ names(sf.1A1a_ep)
 
 
 # Prostorizacija - sumiranje vrednosti tačkastih zagađivača po ćelijama grida:
- 
+suppressMessages( 
 p.1A1a_ep <- gridWGS84 %>%
  sf::st_join(sf.1A1a_ep) %>%
  dplyr::group_by(id) %>%
@@ -92,7 +92,7 @@ p.1A1a_ep <- gridWGS84 %>%
                   NMVOC = sum(NMVOC, na.rm = TRUE),
                   NH3 = sum(NH3, na.rm = TRUE)) %>% 
  dplyr::mutate(id = as.numeric(id))
-
+)
 
 # Kontrola:
  
@@ -165,7 +165,6 @@ sum.sf.1A3bi_R <- sf.1A3bi_R %>%
  dplyr::mutate_if(is.numeric, round, 2)
 sum.sf.1A3bi_R %>% datatable()
 
-sf_use_s2(FALSE)
 # Presek sa gridom:
  
 sf.1A3bi_R %<>% dplyr::mutate(Length = st_length(.),
@@ -203,8 +202,7 @@ sum.sf.1A3bi_R.int
 
 # Prostorizacija - sumiranje vrednosti linijskih zagađivača po ćelijama grida:
 
-sf_use_s2(FALSE)
-
+suppressMessages(
 p.1A3bi_R <- gridWGS84 %>%
  st_join(sf.1A3bi_R.int, join = st_contains) %>% 
  mutate(id = as.numeric(id)) %>%
@@ -216,6 +214,7 @@ p.1A3bi_R <- gridWGS84 %>%
            NMVOC = sum(NMVOC, na.rm = TRUE),
            NH3 = sum(NH3, na.rm = TRUE)) %>% 
  mutate(id = as.numeric(id))
+)
 
 # p.1A3bi_R[,vars] <- drop_units(p.1A3bi_R[,vars])
 
@@ -257,7 +256,6 @@ mapview(map.1A3bi_R, zcol = "Spatialised", layer.name = "Spatialised 1A3bi_R")
 
 # 3Da1 - Inorganic N-fertilizers (površinski izvor)
 # ------------------------------------------------------------------------------
-sf_use_s2(FALSE)
 
 # Corine Land Cover karta (zemljišni pokrivač):
  
@@ -302,7 +300,8 @@ sf.3Da1 <- sf_clc18_polj.int %>%
 sf.3Da1 %<>% dplyr::select(vars)
 
 # Prostorizacija - sumiranje vrednosti površinskih zagađivača po ćelijama grida:
- 
+
+suppressMessages( 
 p.3Da1 <- gridWGS84 %>%
  st_join(sf.3Da1, join = st_contains) %>% 
  group_by(id) %>%
@@ -313,6 +312,7 @@ p.3Da1 <- gridWGS84 %>%
            NMVOC = sum(NMVOC, na.rm = TRUE),
            NH3 = sum(NH3, na.rm = TRUE)) %>% 
  mutate(id = as.numeric(id))
+)
 
 # p.3Da1[, vars] <- drop_units(p.3Da1[, vars])
 
@@ -352,7 +352,7 @@ mapview(map.3Da1, zcol = "Spatialised", layer.name = "Spatialised 1A3bi_R")
 data.spat.list <- list(p.1A1a_ep, p.1A3bi_R, p.3Da1)                                                   
 
 sf_data <- data.spat.list[[1]]
-
+suppressMessages(
 for(i in 2:length(data.spat.list)){
  sf_data <- st_join(sf_data, data.spat.list[[i]], join = st_equals) %>%
    dplyr::group_by(id.x) %>%
@@ -371,6 +371,7 @@ for(i in 2:length(data.spat.list)){
  print(paste("NMVOC:",sum(sf_data$NMVOC)))
  print(paste("NH3:",sum(sf_data$NH3)))
 }
+)
 
 sf_data
 
